@@ -54,7 +54,6 @@ public class BrandManager implements BrandService {
     }
 
     // temp business rules
-
     private void brandShouldBeExist(Optional<Brand> brand) {
         if (brand.isEmpty()) {
             throw new RuntimeException(brandNotFoundMessage);
@@ -62,14 +61,14 @@ public class BrandManager implements BrandService {
     }
 
     private void brandNameCanNotBeDuplicatedWhenInserted(String name) {
-        Optional<Brand> foundOptionalBrand = brandRepository.getByNameContainingIgnoreCase(name.trim());
+        Optional<Brand> foundOptionalBrand = brandRepository.getByNameIgnoreCase(name.trim());
         if (foundOptionalBrand.isPresent()) {
             throw new RuntimeException(brandAlreadyExistsMessage);
         }
     }
 
     private void brandNameCanNotBeDuplicatedWhenUpdated(Brand brand) {
-        boolean exists = brandRepository.existsByNameAndIdIsNot(brand.getName(), brand.getId());
+        boolean exists = brandRepository.existsByNameIgnoreCaseAndIdIsNot(brand.getName().trim(), brand.getId());
         if (exists) {
             throw new RuntimeException(brandAlreadyExistsMessage);
         }

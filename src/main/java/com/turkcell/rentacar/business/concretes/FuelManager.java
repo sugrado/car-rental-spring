@@ -61,14 +61,14 @@ public class FuelManager implements FuelService {
     }
 
     private void fuelNameCanNotBeDuplicatedWhenInserted(String name) {
-        Optional<Fuel> foundOptionalFuel = fuelRepository.getByNameContainingIgnoreCase(name.trim());
+        Optional<Fuel> foundOptionalFuel = fuelRepository.getByNameIgnoreCase(name.trim());
         if (foundOptionalFuel.isPresent()) {
             throw new RuntimeException(fuelAlreadyExistsMessage);
         }
     }
 
     private void fuelNameCanNotBeDuplicatedWhenUpdated(Fuel fuel) {
-        boolean exists = fuelRepository.existsByNameAndIdIsNot(fuel.getName(), fuel.getId());
+        boolean exists = fuelRepository.existsByNameIgnoreCaseAndIdIsNot(fuel.getName().trim(), fuel.getId());
         if (exists) {
             throw new RuntimeException(fuelAlreadyExistsMessage);
         }
