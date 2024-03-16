@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface TransmissionRepository extends JpaRepository<Transmission, Integer> {
     Optional<Transmission> getByNameIgnoreCase(String name);
+
     boolean existsByNameIgnoreCaseAndIdIsNot(String name, int id);
 }

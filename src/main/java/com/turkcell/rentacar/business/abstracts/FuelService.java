@@ -6,8 +6,12 @@ import java.util.List;
 
 public interface FuelService {
     Fuel add(Fuel fuel);
+
     Fuel update(Fuel fuel);
+
     void delete(int id);
+
     List<Fuel> getAll();
+
     Fuel get(int id);
 }

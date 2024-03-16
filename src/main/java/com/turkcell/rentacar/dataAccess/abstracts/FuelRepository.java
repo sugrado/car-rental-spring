@@ -9,5 +9,6 @@ import java.util.Optional;
 
 public interface FuelRepository extends JpaRepository<Fuel, Integer> {
     Optional<Fuel> getByNameIgnoreCase(String name);
+
     boolean existsByNameIgnoreCaseAndIdIsNot(String name, int id);
 }
