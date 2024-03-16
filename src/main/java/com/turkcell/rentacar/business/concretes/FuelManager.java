@@ -18,12 +18,14 @@ public class FuelManager implements FuelService {
 
     @Override
     public Fuel add(Fuel fuel) {
+        // TODO: Validation rules
         fuelNameCanNotBeDuplicatedWhenInserted(fuel.getName());
         return fuelRepository.save(fuel);
     }
 
     @Override
     public Fuel update(Fuel fuel) {
+        // TODO: Validation rules
         Optional<Fuel> foundOptionalFuel = fuelRepository.findById(fuel.getId());
         fuelShouldBeExist(foundOptionalFuel);
         fuelNameCanNotBeDuplicatedWhenUpdated(fuel);
@@ -54,6 +56,7 @@ public class FuelManager implements FuelService {
     }
 
     // temp business rules
+    // TODO: FuelBusinessRules
     private void fuelShouldBeExist(Optional<Fuel> fuel) {
         if (fuel.isEmpty()) {
             throw new RuntimeException(fuelNotFoundMessage);

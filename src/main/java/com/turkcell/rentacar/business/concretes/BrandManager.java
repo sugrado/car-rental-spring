@@ -18,12 +18,14 @@ public class BrandManager implements BrandService {
 
     @Override
     public Brand add(Brand brand) {
+        // TODO: Validation rules
         brandNameCanNotBeDuplicatedWhenInserted(brand.getName());
         return brandRepository.save(brand);
     }
 
     @Override
     public Brand update(Brand brand) {
+        // TODO: Validation rules
         Optional<Brand> foundOptionalBrand = brandRepository.findById(brand.getId());
         brandShouldBeExist(foundOptionalBrand);
         brandNameCanNotBeDuplicatedWhenUpdated(brand);
@@ -54,6 +56,7 @@ public class BrandManager implements BrandService {
     }
 
     // temp business rules
+    // TODO: BrandBusinessRules
     private void brandShouldBeExist(Optional<Brand> brand) {
         if (brand.isEmpty()) {
             throw new RuntimeException(brandNotFoundMessage);

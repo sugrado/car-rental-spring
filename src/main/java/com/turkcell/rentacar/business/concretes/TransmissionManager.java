@@ -18,12 +18,14 @@ public class TransmissionManager implements TransmissionService {
 
     @Override
     public Transmission add(Transmission transmission) {
+        // TODO: Validation rules
         transmissionNameCanNotBeDuplicatedWhenInserted(transmission.getName());
         return transmissionRepository.save(transmission);
     }
 
     @Override
     public Transmission update(Transmission transmission) {
+        // TODO: Validation rules
         Optional<Transmission> foundOptionalTransmission = transmissionRepository.findById(transmission.getId());
         transmissionShouldBeExist(foundOptionalTransmission);
         transmissionNameCanNotBeDuplicatedWhenUpdated(transmission);
@@ -54,6 +56,7 @@ public class TransmissionManager implements TransmissionService {
     }
 
     // temp business rules
+    // TODO: TransmissionBusinessRules
     private void transmissionShouldBeExist(Optional<Transmission> transmission) {
         if (transmission.isEmpty()) {
             throw new RuntimeException(transmissionNotFoundMessage);
