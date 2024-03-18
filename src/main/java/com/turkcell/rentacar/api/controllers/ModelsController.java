@@ -1,6 +1,11 @@
 package com.turkcell.rentacar.api.controllers;
 
 import com.turkcell.rentacar.business.abstracts.ModelService;
+import com.turkcell.rentacar.business.dtos.requests.CreateModelRequest;
+import com.turkcell.rentacar.business.dtos.requests.UpdateModelRequest;
+import com.turkcell.rentacar.business.dtos.responses.CreatedModelResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetModelResponse;
+import com.turkcell.rentacar.business.dtos.responses.UpdatedModelResponse;
 import com.turkcell.rentacar.entities.concretes.Model;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,14 +21,14 @@ public class ModelsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Model add(@RequestBody Model model) {
+    public CreatedModelResponse add(@RequestBody CreateModelRequest model) {
         return modelService.add(model);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Model update(@RequestBody Model model) {
-        return modelService.update(model);
+    public UpdatedModelResponse update(@PathVariable int id, @RequestBody UpdateModelRequest model) {
+        return modelService.update(id, model);
     }
 
     @DeleteMapping("/{id}")
@@ -34,7 +39,7 @@ public class ModelsController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Model get(@PathVariable int id) {
+    public GetModelResponse get(@PathVariable int id) {
         return modelService.get(id);
     }
 

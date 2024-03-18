@@ -1,11 +1,21 @@
 package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.FuelService;
+import com.turkcell.rentacar.business.dtos.requests.CreateFuelRequest;
+import com.turkcell.rentacar.business.dtos.requests.UpdateFuelRequest;
+import com.turkcell.rentacar.business.dtos.responses.*;
+import com.turkcell.rentacar.business.dtos.responses.CreatedFuelResponse;
+import com.turkcell.rentacar.business.dtos.responses.UpdatedFuelResponse;
+import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.FuelRepository;
+import com.turkcell.rentacar.entities.concretes.Fuel;
+import com.turkcell.rentacar.entities.concretes.Fuel;
+import com.turkcell.rentacar.entities.concretes.Fuel;
 import com.turkcell.rentacar.entities.concretes.Fuel;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,25 +25,31 @@ public class FuelManager implements FuelService {
     FuelRepository fuelRepository; // IoC
     private static final String fuelNotFoundMessage = "Fuel not found";
     private static final String fuelAlreadyExistsMessage = "Fuel already exists";
+    private ModelMapperService modelMapperService;
 
     @Override
-    public Fuel add(Fuel fuel) {
-        // TODO: Validation rules
-        fuelNameCanNotBeDuplicatedWhenInserted(fuel.getName());
-        return fuelRepository.save(fuel);
+    public CreatedFuelResponse add(CreateFuelRequest createFuelRequest) {
+        fuelNameCanNotBeDuplicatedWhenInserted(createFuelRequest.getName());
+
+        Fuel fuel = modelMapperService.forRequest().map(createFuelRequest, Fuel.class);
+        fuel.setCreatedDate(LocalDateTime.now());
+
+        Fuel createdFuel = fuelRepository.save(fuel);
+        return modelMapperService.forResponse().map(createdFuel, CreatedFuelResponse.class);
     }
 
     @Override
-    public Fuel update(Fuel fuel) {
-        // TODO: Validation rules
-        Optional<Fuel> foundOptionalFuel = fuelRepository.findById(fuel.getId());
+    public UpdatedFuelResponse update(int id, UpdateFuelRequest updateFuelRequest) {
+        Optional<Fuel> foundOptionalFuel = fuelRepository.findById(id);
         fuelShouldBeExist(foundOptionalFuel);
-        fuelNameCanNotBeDuplicatedWhenUpdated(fuel);
+        fuelNameCanNotBeDuplicatedWhenUpdated(id, updateFuelRequest.getName());
 
         Fuel fuelToUpdate = foundOptionalFuel.get();
-        fuelToUpdate.setName(fuel.getName()); // TODO: mapper
+        modelMapperService.forRequest().map(updateFuelRequest, fuelToUpdate);
+        fuelToUpdate.setUpdatedDate(LocalDateTime.now());
 
-        return fuelRepository.save(fuelToUpdate);
+        Fuel updatedFuel = fuelRepository.save(fuelToUpdate);
+        return modelMapperService.forResponse().map(updatedFuel, UpdatedFuelResponse.class);
     }
 
     @Override
@@ -49,10 +65,10 @@ public class FuelManager implements FuelService {
     }
 
     @Override
-    public Fuel get(int id) {
+    public GetFuelResponse get(int id) {
         Optional<Fuel> foundOptionalFuel = fuelRepository.findById(id);
         fuelShouldBeExist(foundOptionalFuel);
-        return foundOptionalFuel.get();
+        return modelMapperService.forResponse().map(foundOptionalFuel.get(), GetFuelResponse.class);
     }
 
     // temp business rules
@@ -70,8 +86,8 @@ public class FuelManager implements FuelService {
         }
     }
 
-    private void fuelNameCanNotBeDuplicatedWhenUpdated(Fuel fuel) {
-        boolean exists = fuelRepository.existsByNameIgnoreCaseAndIdIsNot(fuel.getName().trim(), fuel.getId());
+    private void fuelNameCanNotBeDuplicatedWhenUpdated(int id, String name) {
+        boolean exists = fuelRepository.existsByNameIgnoreCaseAndIdIsNot(name.trim(), id);
         if (exists) {
             throw new RuntimeException(fuelAlreadyExistsMessage);
         }

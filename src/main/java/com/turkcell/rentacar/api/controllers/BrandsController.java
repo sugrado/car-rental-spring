@@ -1,6 +1,13 @@
 package com.turkcell.rentacar.api.controllers;
 
 import com.turkcell.rentacar.business.abstracts.BrandService;
+import com.turkcell.rentacar.business.dtos.requests.CreateBrandRequest;
+import com.turkcell.rentacar.business.dtos.requests.UpdateBrandRequest;
+import com.turkcell.rentacar.business.dtos.responses.CreatedBrandResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetAllBrandsListItemDto;
+import com.turkcell.rentacar.business.dtos.responses.GetBrandResponse;
+import com.turkcell.rentacar.business.dtos.responses.UpdatedBrandResponse;
+import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
 import com.turkcell.rentacar.entities.concretes.Brand;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,14 +23,14 @@ public class BrandsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Brand add(@RequestBody Brand brand) {
-        return brandService.add(brand);
+    public CreatedBrandResponse add(@RequestBody CreateBrandRequest createBrandRequest) {
+        return brandService.add(createBrandRequest);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Brand update(@RequestBody Brand brand) {
-        return brandService.update(brand);
+    public UpdatedBrandResponse update(@PathVariable int id, @RequestBody UpdateBrandRequest brand) {
+        return brandService.update(id, brand);
     }
 
     @DeleteMapping("/{id}")
@@ -34,13 +41,13 @@ public class BrandsController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Brand get(@PathVariable int id) {
+    public GetBrandResponse get(@PathVariable int id) {
         return brandService.get(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Brand> getAll() {
+    public GetListResponse<GetAllBrandsListItemDto> getAll() {
         return brandService.getAll();
     }
 }

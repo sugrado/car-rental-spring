@@ -1,17 +1,22 @@
 package com.turkcell.rentacar.business.abstracts;
 
+import com.turkcell.rentacar.business.dtos.requests.CreateTransmissionRequest;
+import com.turkcell.rentacar.business.dtos.requests.UpdateTransmissionRequest;
+import com.turkcell.rentacar.business.dtos.responses.CreatedTransmissionResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetTransmissionResponse;
+import com.turkcell.rentacar.business.dtos.responses.UpdatedTransmissionResponse;
 import com.turkcell.rentacar.entities.concretes.Transmission;
 
 import java.util.List;
 
 public interface TransmissionService {
-    Transmission add(Transmission transmission);
+    CreatedTransmissionResponse add(CreateTransmissionRequest createTransmissionRequest);
 
-    Transmission update(Transmission transmission);
+    UpdatedTransmissionResponse update(int id, UpdateTransmissionRequest updateTransmissionRequest);
 
     void delete(int id);
 
     List<Transmission> getAll();
 
-    Transmission get(int id);
+    GetTransmissionResponse get(int id);
 }
