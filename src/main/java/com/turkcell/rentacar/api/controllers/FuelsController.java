@@ -4,14 +4,13 @@ import com.turkcell.rentacar.business.abstracts.FuelService;
 import com.turkcell.rentacar.business.dtos.requests.CreateFuelRequest;
 import com.turkcell.rentacar.business.dtos.requests.UpdateFuelRequest;
 import com.turkcell.rentacar.business.dtos.responses.CreatedFuelResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetAllFuelsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetFuelResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedFuelResponse;
-import com.turkcell.rentacar.entities.concretes.Fuel;
+import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -45,7 +44,7 @@ public class FuelsController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Fuel> getAll() {
+    public GetListResponse<GetAllFuelsListItemDto> getAll() {
         return fuelService.getAll();
     }
 }

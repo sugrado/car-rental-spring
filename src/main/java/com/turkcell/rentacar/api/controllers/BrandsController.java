@@ -8,12 +8,9 @@ import com.turkcell.rentacar.business.dtos.responses.GetAllBrandsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
-import com.turkcell.rentacar.entities.concretes.Brand;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @AllArgsConstructor

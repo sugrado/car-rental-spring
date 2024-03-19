@@ -13,8 +13,10 @@ import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.BrandRepository;
 import com.turkcell.rentacar.entities.concretes.Brand;
 import lombok.AllArgsConstructor;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +63,10 @@ public class BrandManager implements BrandService {
     @Override
     public GetListResponse<GetAllBrandsListItemDto> getAll() {
         List<Brand> brands = brandRepository.findAll();
-        return modelMapperService.forResponse().map(brands, GetListResponse.class);
+        Type listType = new TypeToken<List<GetAllBrandsListItemDto>>() {
+        }.getType();
+        List<GetAllBrandsListItemDto> items = modelMapperService.forResponse().map(brands, listType);
+        return new GetListResponse<>(items);
     }
 
     @Override

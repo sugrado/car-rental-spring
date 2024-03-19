@@ -4,15 +4,19 @@ import com.turkcell.rentacar.business.abstracts.TransmissionService;
 import com.turkcell.rentacar.business.dtos.requests.CreateTransmissionRequest;
 import com.turkcell.rentacar.business.dtos.requests.UpdateTransmissionRequest;
 import com.turkcell.rentacar.business.dtos.responses.CreatedTransmissionResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetAllTransmissionsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetTransmissionResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedTransmissionResponse;
+import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
 import com.turkcell.rentacar.business.rules.TransmissionBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.TransmissionRepository;
 import com.turkcell.rentacar.entities.concretes.Transmission;
 import lombok.AllArgsConstructor;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -57,8 +61,12 @@ public class TransmissionManager implements TransmissionService {
     }
 
     @Override
-    public List<Transmission> getAll() {
-        return transmissionRepository.findAll();
+    public GetListResponse<GetAllTransmissionsListItemDto> getAll() {
+        List<Transmission> transmissions = transmissionRepository.findAll();
+        Type listType = new TypeToken<List<GetAllTransmissionsListItemDto>>() {
+        }.getType();
+        List<GetAllTransmissionsListItemDto> items = modelMapperService.forResponse().map(transmissions, listType);
+        return new GetListResponse<>(items);
     }
 
     @Override

@@ -4,14 +4,13 @@ import com.turkcell.rentacar.business.abstracts.TransmissionService;
 import com.turkcell.rentacar.business.dtos.requests.CreateTransmissionRequest;
 import com.turkcell.rentacar.business.dtos.requests.UpdateTransmissionRequest;
 import com.turkcell.rentacar.business.dtos.responses.CreatedTransmissionResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetAllTransmissionsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetTransmissionResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedTransmissionResponse;
-import com.turkcell.rentacar.entities.concretes.Transmission;
+import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -45,7 +44,7 @@ public class TransmissionsController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Transmission> getAll() {
+    public GetListResponse<GetAllTransmissionsListItemDto> getAll() {
         return transmissionService.getAll();
     }
 }

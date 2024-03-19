@@ -3,11 +3,10 @@ package com.turkcell.rentacar.business.abstracts;
 import com.turkcell.rentacar.business.dtos.requests.CreateModelRequest;
 import com.turkcell.rentacar.business.dtos.requests.UpdateModelRequest;
 import com.turkcell.rentacar.business.dtos.responses.CreatedModelResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetAllModelsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetModelResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedModelResponse;
-import com.turkcell.rentacar.entities.concretes.Model;
-
-import java.util.List;
+import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
 
 public interface ModelService {
     CreatedModelResponse add(CreateModelRequest createModelRequest);
@@ -16,7 +15,7 @@ public interface ModelService {
 
     void delete(int id);
 
-    List<Model> getAll();
+    GetListResponse<GetAllModelsListItemDto> getAll();
 
     GetModelResponse get(int id);
 }

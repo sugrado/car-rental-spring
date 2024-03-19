@@ -3,11 +3,10 @@ package com.turkcell.rentacar.business.abstracts;
 import com.turkcell.rentacar.business.dtos.requests.CreateFuelRequest;
 import com.turkcell.rentacar.business.dtos.requests.UpdateFuelRequest;
 import com.turkcell.rentacar.business.dtos.responses.CreatedFuelResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetAllFuelsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetFuelResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedFuelResponse;
-import com.turkcell.rentacar.entities.concretes.Fuel;
-
-import java.util.List;
+import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
 
 public interface FuelService {
     CreatedFuelResponse add(CreateFuelRequest createFuelRequest);
@@ -16,7 +15,7 @@ public interface FuelService {
 
     void delete(int id);
 
-    List<Fuel> getAll();
+    GetListResponse<GetAllFuelsListItemDto> getAll();
 
     GetFuelResponse get(int id);
 }
