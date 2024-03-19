@@ -8,6 +8,7 @@ import com.turkcell.rentacar.business.dtos.responses.GetAllBrandsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
+import com.turkcell.rentacar.business.rules.BrandBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.BrandRepository;
 import com.turkcell.rentacar.entities.concretes.Brand;
@@ -21,14 +22,13 @@ import java.util.Optional;
 @AllArgsConstructor
 @Service
 public class BrandManager implements BrandService {
-    BrandRepository brandRepository; // IoC
-    private static final String brandNotFoundMessage = "Brand not found";
-    private static final String brandAlreadyExistsMessage = "Brand already exists";
-    ModelMapperService modelMapperService;
+    private final BrandRepository brandRepository; // IoC
+    private final ModelMapperService modelMapperService;
+    private final BrandBusinessRules brandBusinessRules;
 
     @Override
     public CreatedBrandResponse add(CreateBrandRequest createBrandRequest) {
-        brandNameCanNotBeDuplicatedWhenInserted(createBrandRequest.getName());
+        brandBusinessRules.brandNameCanNotBeDuplicatedWhenInserted(createBrandRequest.getName());
 
         Brand brand = modelMapperService.forRequest().map(createBrandRequest, Brand.class);
         brand.setCreatedDate(LocalDateTime.now());
@@ -40,8 +40,8 @@ public class BrandManager implements BrandService {
     @Override
     public UpdatedBrandResponse update(int id, UpdateBrandRequest updateBrandRequest) {
         Optional<Brand> foundOptionalBrand = brandRepository.findById(id);
-        brandShouldBeExist(foundOptionalBrand);
-        brandNameCanNotBeDuplicatedWhenUpdated(id, updateBrandRequest.getName());
+        brandBusinessRules.brandShouldBeExist(foundOptionalBrand);
+        brandBusinessRules.brandNameCanNotBeDuplicatedWhenUpdated(id, updateBrandRequest.getName());
 
         Brand brandToUpdate = foundOptionalBrand.get();
         modelMapperService.forRequest().map(updateBrandRequest, brandToUpdate);
@@ -54,7 +54,7 @@ public class BrandManager implements BrandService {
     @Override
     public void delete(int id) {
         Optional<Brand> foundOptionalBrand = brandRepository.findById(id);
-        brandShouldBeExist(foundOptionalBrand);
+        brandBusinessRules.brandShouldBeExist(foundOptionalBrand);
         brandRepository.delete(foundOptionalBrand.get());
     }
 
@@ -67,29 +67,7 @@ public class BrandManager implements BrandService {
     @Override
     public GetBrandResponse get(int id) {
         Optional<Brand> foundOptionalBrand = brandRepository.findById(id);
-        brandShouldBeExist(foundOptionalBrand);
+        brandBusinessRules.brandShouldBeExist(foundOptionalBrand);
         return modelMapperService.forResponse().map(foundOptionalBrand.get(), GetBrandResponse.class);
-    }
-
-    // temp business rules
-    // TODO: BrandBusinessRules
-    private void brandShouldBeExist(Optional<Brand> brand) {
-        if (brand.isEmpty()) {
-            throw new RuntimeException(brandNotFoundMessage);
-        }
-    }
-
-    private void brandNameCanNotBeDuplicatedWhenInserted(String name) {
-        Optional<Brand> foundOptionalBrand = brandRepository.getByNameIgnoreCase(name.trim());
-        if (foundOptionalBrand.isPresent()) {
-            throw new RuntimeException(brandAlreadyExistsMessage);
-        }
-    }
-
-    private void brandNameCanNotBeDuplicatedWhenUpdated(int id, String name) {
-        boolean exists = brandRepository.existsByNameIgnoreCaseAndIdIsNot(name.trim(), id);
-        if (exists) {
-            throw new RuntimeException(brandAlreadyExistsMessage);
-        }
     }
 }
