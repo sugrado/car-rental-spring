@@ -38,6 +38,12 @@ public class BrandManager implements BrandService {
         return modelMapperService.forResponse().map(createdBrand, CreatedBrandResponse.class);
     }
 
+    // entity -> Özgür
+    // repository (reserved words) -> Görkem
+    // service (IoC içerir) -> Ege
+    // dto'lar ve mapper (IoC içerir) -> Ömer Faruk
+    // business rules -> Ömer Ç.
+    // api -> Rozerin
     @Override
     public UpdatedBrandResponse update(int id, UpdateBrandRequest updateBrandRequest) {
         Optional<Brand> foundOptionalBrand = brandRepository.findById(id);

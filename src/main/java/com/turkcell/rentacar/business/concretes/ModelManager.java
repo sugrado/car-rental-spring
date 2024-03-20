@@ -42,18 +42,14 @@ public class ModelManager implements ModelService {
 
     @Override
     public UpdatedModelResponse update(int id, UpdateModelRequest updateModelRequest) {
-        Optional<Model> foundOptionalModel = modelRepository.findById(id);
-        modelBusinessRules.modelShouldBeExist(foundOptionalModel);
+        modelBusinessRules.modelIdShouldBeExist(id);
+        modelBusinessRules.brandIdShouldBeExist(updateModelRequest.getBrandId());
+        modelBusinessRules.fuelIdShouldBeExist(updateModelRequest.getFuelId());
+        modelBusinessRules.transmissionIdShouldBeExist(updateModelRequest.getTransmissionId());
 
-        Model modelToUpdate = foundOptionalModel.get();
-        modelMapperService.forRequest().map(updateModelRequest, modelToUpdate);
-        modelToUpdate.setUpdatedDate(LocalDateTime.now());
-
-        modelBusinessRules.brandIdShouldBeExist(modelToUpdate.getBrand().getId());
-        modelBusinessRules.fuelIdShouldBeExist(modelToUpdate.getFuel().getId());
-        modelBusinessRules.transmissionIdShouldBeExist(modelToUpdate.getTransmission().getId());
-
-        Model updatedModel = modelRepository.save(modelToUpdate);
+        Model model = modelMapperService.forRequest().map(updateModelRequest, Model.class);
+        model.setId(id);
+        Model updatedModel = modelRepository.save(model);
         return modelMapperService.forResponse().map(updatedModel, UpdatedModelResponse.class);
     }
 
