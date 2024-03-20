@@ -29,7 +29,7 @@ public class FuelBusinessRules {
     }
 
     public void fuelNameCanNotBeDuplicatedWhenInserted(String name) {
-        Optional<Fuel> foundOptionalFuel = fuelRepository.getByNameIgnoreCase(name.trim());
+        Optional<Fuel> foundOptionalFuel = fuelRepository.findByNameIgnoreCase(name.trim());
         if (foundOptionalFuel.isPresent()) {
             throw new RuntimeException(fuelAlreadyExistsMessage);
         }

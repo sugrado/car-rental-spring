@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface TransmissionRepository extends JpaRepository<Transmission, Integer> {
-    Optional<Transmission> getByNameIgnoreCase(String name);
+    Optional<Transmission> findByNameIgnoreCase(String name);
 
     boolean existsByNameIgnoreCaseAndIdIsNot(String name, int id);
 }

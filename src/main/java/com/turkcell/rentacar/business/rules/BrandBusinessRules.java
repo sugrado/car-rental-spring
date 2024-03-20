@@ -28,7 +28,7 @@ public class BrandBusinessRules {
     }
 
     public void brandNameCanNotBeDuplicatedWhenInserted(String name) {
-        Optional<Brand> foundOptionalBrand = brandRepository.getByNameIgnoreCase(name.trim());
+        Optional<Brand> foundOptionalBrand = brandRepository.findByNameIgnoreCase(name.trim());
         if (foundOptionalBrand.isPresent()) {
             throw new RuntimeException(brandAlreadyExistsMessage);
         }
