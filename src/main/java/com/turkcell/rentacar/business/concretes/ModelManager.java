@@ -7,7 +7,6 @@ import com.turkcell.rentacar.business.dtos.responses.CreatedModelResponse;
 import com.turkcell.rentacar.business.dtos.responses.GetAllModelsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetModelResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedModelResponse;
-import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
 import com.turkcell.rentacar.business.rules.ModelBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.ModelRepository;
@@ -66,12 +65,11 @@ public class ModelManager implements ModelService {
     }
 
     @Override
-    public GetListResponse<GetAllModelsListItemDto> getAll() {
+    public List<GetAllModelsListItemDto> getAll() {
         List<Model> models = modelRepository.findAll();
         Type listType = new TypeToken<List<GetAllModelsListItemDto>>() {
         }.getType();
-        List<GetAllModelsListItemDto> items = modelMapperService.forResponse().map(models, listType);
-        return new GetListResponse<>(items);
+        return modelMapperService.forResponse().map(models, listType);
     }
 
     @Override

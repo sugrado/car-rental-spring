@@ -6,7 +6,8 @@ import com.turkcell.rentacar.business.dtos.responses.CreatedFuelResponse;
 import com.turkcell.rentacar.business.dtos.responses.GetAllFuelsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetFuelResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedFuelResponse;
-import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
+
+import java.util.List;
 
 public interface FuelService {
     CreatedFuelResponse add(CreateFuelRequest createFuelRequest);
@@ -15,7 +16,7 @@ public interface FuelService {
 
     void delete(int id);
 
-    GetListResponse<GetAllFuelsListItemDto> getAll();
+    List<GetAllFuelsListItemDto> getAll();
 
     GetFuelResponse get(int id);
 }

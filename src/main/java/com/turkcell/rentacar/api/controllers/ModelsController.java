@@ -7,10 +7,11 @@ import com.turkcell.rentacar.business.dtos.responses.CreatedModelResponse;
 import com.turkcell.rentacar.business.dtos.responses.GetAllModelsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetModelResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedModelResponse;
-import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -44,7 +45,7 @@ public class ModelsController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public GetListResponse<GetAllModelsListItemDto> getAll() {
+    public List<GetAllModelsListItemDto> getAll() {
         return modelService.getAll();
     }
 }

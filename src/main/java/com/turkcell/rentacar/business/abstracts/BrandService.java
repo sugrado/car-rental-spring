@@ -6,7 +6,8 @@ import com.turkcell.rentacar.business.dtos.responses.CreatedBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.GetAllBrandsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedBrandResponse;
-import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
+
+import java.util.List;
 
 public interface BrandService {
     CreatedBrandResponse add(CreateBrandRequest createBrandRequest);
@@ -15,7 +16,7 @@ public interface BrandService {
 
     void delete(int id);
 
-    GetListResponse<GetAllBrandsListItemDto> getAll();
+    List<GetAllBrandsListItemDto> getAll();
 
     GetBrandResponse get(int id);
 }

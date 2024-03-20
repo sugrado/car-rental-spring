@@ -7,7 +7,6 @@ import com.turkcell.rentacar.business.dtos.responses.CreatedTransmissionResponse
 import com.turkcell.rentacar.business.dtos.responses.GetAllTransmissionsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetTransmissionResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedTransmissionResponse;
-import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
 import com.turkcell.rentacar.business.rules.TransmissionBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.TransmissionRepository;
@@ -61,12 +60,11 @@ public class TransmissionManager implements TransmissionService {
     }
 
     @Override
-    public GetListResponse<GetAllTransmissionsListItemDto> getAll() {
+    public List<GetAllTransmissionsListItemDto> getAll() {
         List<Transmission> transmissions = transmissionRepository.findAll();
         Type listType = new TypeToken<List<GetAllTransmissionsListItemDto>>() {
         }.getType();
-        List<GetAllTransmissionsListItemDto> items = modelMapperService.forResponse().map(transmissions, listType);
-        return new GetListResponse<>(items);
+        return modelMapperService.forResponse().map(transmissions, listType);
     }
 
     @Override

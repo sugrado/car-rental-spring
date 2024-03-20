@@ -6,7 +6,8 @@ import com.turkcell.rentacar.business.dtos.responses.CreatedModelResponse;
 import com.turkcell.rentacar.business.dtos.responses.GetAllModelsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetModelResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedModelResponse;
-import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
+
+import java.util.List;
 
 public interface ModelService {
     CreatedModelResponse add(CreateModelRequest createModelRequest);
@@ -15,7 +16,7 @@ public interface ModelService {
 
     void delete(int id);
 
-    GetListResponse<GetAllModelsListItemDto> getAll();
+    List<GetAllModelsListItemDto> getAll();
 
     GetModelResponse get(int id);
 }

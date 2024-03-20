@@ -7,10 +7,11 @@ import com.turkcell.rentacar.business.dtos.responses.CreatedBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.GetAllBrandsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedBrandResponse;
-import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -24,7 +25,7 @@ public class BrandsController {
         return brandService.add(createBrandRequest);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}") // api/v1/brands/5
     @ResponseStatus(HttpStatus.OK)
     public UpdatedBrandResponse update(@PathVariable int id, @RequestBody UpdateBrandRequest brand) {
         return brandService.update(id, brand);
@@ -44,7 +45,7 @@ public class BrandsController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public GetListResponse<GetAllBrandsListItemDto> getAll() {
+    public List<GetAllBrandsListItemDto> getAll() {
         return brandService.getAll();
     }
 }

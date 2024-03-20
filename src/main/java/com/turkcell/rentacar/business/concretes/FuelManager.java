@@ -7,7 +7,6 @@ import com.turkcell.rentacar.business.dtos.responses.CreatedFuelResponse;
 import com.turkcell.rentacar.business.dtos.responses.GetAllFuelsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetFuelResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedFuelResponse;
-import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
 import com.turkcell.rentacar.business.rules.FuelBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.FuelRepository;
@@ -61,12 +60,11 @@ public class FuelManager implements FuelService {
     }
 
     @Override
-    public GetListResponse<GetAllFuelsListItemDto> getAll() {
+    public List<GetAllFuelsListItemDto> getAll() {
         List<Fuel> fuels = fuelRepository.findAll();
         Type listType = new TypeToken<List<GetAllFuelsListItemDto>>() {
         }.getType();
-        List<GetAllFuelsListItemDto> items = modelMapperService.forResponse().map(fuels, listType);
-        return new GetListResponse<>(items);
+        return modelMapperService.forResponse().map(fuels, listType);
     }
 
     @Override

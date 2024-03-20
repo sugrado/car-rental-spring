@@ -7,7 +7,6 @@ import com.turkcell.rentacar.business.dtos.responses.CreatedBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.GetAllBrandsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedBrandResponse;
-import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
 import com.turkcell.rentacar.business.rules.BrandBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.BrandRepository;
@@ -61,12 +60,11 @@ public class BrandManager implements BrandService {
     }
 
     @Override
-    public GetListResponse<GetAllBrandsListItemDto> getAll() {
+    public List<GetAllBrandsListItemDto> getAll() {
         List<Brand> brands = brandRepository.findAll();
         Type listType = new TypeToken<List<GetAllBrandsListItemDto>>() {
         }.getType();
-        List<GetAllBrandsListItemDto> items = modelMapperService.forResponse().map(brands, listType);
-        return new GetListResponse<>(items);
+        return modelMapperService.forResponse().map(brands, listType);
     }
 
     @Override

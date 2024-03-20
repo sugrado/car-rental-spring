@@ -6,7 +6,8 @@ import com.turkcell.rentacar.business.dtos.responses.CreatedTransmissionResponse
 import com.turkcell.rentacar.business.dtos.responses.GetAllTransmissionsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetTransmissionResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedTransmissionResponse;
-import com.turkcell.rentacar.business.dtos.responses.common.GetListResponse;
+
+import java.util.List;
 
 public interface TransmissionService {
     CreatedTransmissionResponse add(CreateTransmissionRequest createTransmissionRequest);
@@ -15,7 +16,7 @@ public interface TransmissionService {
 
     void delete(int id);
 
-    GetListResponse<GetAllTransmissionsListItemDto> getAll();
+    List<GetAllTransmissionsListItemDto> getAll();
 
     GetTransmissionResponse get(int id);
 }
