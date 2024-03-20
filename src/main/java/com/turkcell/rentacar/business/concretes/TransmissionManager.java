@@ -40,14 +40,10 @@ public class TransmissionManager implements TransmissionService {
 
     @Override
     public UpdatedTransmissionResponse update(int id, UpdateTransmissionRequest updateTransmissionRequest) {
-        Optional<Transmission> foundOptionalTransmission = transmissionRepository.findById(id);
-        transmissionBusinessRules.transmissionShouldBeExist(foundOptionalTransmission);
-        transmissionBusinessRules.transmissionNameCanNotBeDuplicatedWhenUpdated(id, updateTransmissionRequest.getName());
+        transmissionBusinessRules.transmissionIdShouldBeExist(id);
 
-        Transmission transmissionToUpdate = foundOptionalTransmission.get();
-        modelMapperService.forRequest().map(updateTransmissionRequest, transmissionToUpdate);
-        transmissionToUpdate.setUpdatedDate(LocalDateTime.now());
-
+        Transmission transmissionToUpdate = modelMapperService.forRequest().map(updateTransmissionRequest, Transmission.class);
+        transmissionToUpdate.setId(id);
         Transmission updatedTransmission = transmissionRepository.save(transmissionToUpdate);
         return modelMapperService.forResponse().map(updatedTransmission, UpdatedTransmissionResponse.class);
     }

@@ -21,6 +21,13 @@ public class FuelBusinessRules {
         }
     }
 
+    public void fuelIdShouldBeExist(int fuelId) {
+        Optional<Fuel> fuel = fuelRepository.findById(fuelId);
+        if (fuel.isEmpty()) {
+            throw new RuntimeException(fuelNotFoundMessage);
+        }
+    }
+
     public void fuelNameCanNotBeDuplicatedWhenInserted(String name) {
         Optional<Fuel> foundOptionalFuel = fuelRepository.getByNameIgnoreCase(name.trim());
         if (foundOptionalFuel.isPresent()) {

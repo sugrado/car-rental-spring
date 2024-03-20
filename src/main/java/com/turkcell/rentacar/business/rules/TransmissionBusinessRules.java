@@ -20,6 +20,13 @@ public class TransmissionBusinessRules {
         }
     }
 
+    public void transmissionIdShouldBeExist(int transmissionId) {
+        Optional<Transmission> transmission = transmissionRepository.findById(transmissionId);
+        if (transmission.isEmpty()) {
+            throw new RuntimeException(transmissionNotFoundMessage);
+        }
+    }
+
     public void transmissionNameCanNotBeDuplicatedWhenInserted(String name) {
         Optional<Transmission> foundOptionalTransmission = transmissionRepository.getByNameIgnoreCase(name.trim());
         if (foundOptionalTransmission.isPresent()) {

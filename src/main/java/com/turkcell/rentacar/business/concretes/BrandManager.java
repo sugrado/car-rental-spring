@@ -46,14 +46,10 @@ public class BrandManager implements BrandService {
     // api -> Rozerin
     @Override
     public UpdatedBrandResponse update(int id, UpdateBrandRequest updateBrandRequest) {
-        Optional<Brand> foundOptionalBrand = brandRepository.findById(id);
-        brandBusinessRules.brandShouldBeExist(foundOptionalBrand);
-        brandBusinessRules.brandNameCanNotBeDuplicatedWhenUpdated(id, updateBrandRequest.getName());
+        brandBusinessRules.brandIdShouldBeExist(id);
 
-        Brand brandToUpdate = foundOptionalBrand.get();
-        modelMapperService.forRequest().map(updateBrandRequest, brandToUpdate);
-        brandToUpdate.setUpdatedDate(LocalDateTime.now());
-
+        Brand brandToUpdate = modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
+        brandToUpdate.setId(id);
         Brand updatedBrand = brandRepository.save(brandToUpdate);
         return modelMapperService.forResponse().map(updatedBrand, UpdatedBrandResponse.class);
     }

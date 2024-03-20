@@ -40,14 +40,10 @@ public class FuelManager implements FuelService {
 
     @Override
     public UpdatedFuelResponse update(int id, UpdateFuelRequest updateFuelRequest) {
-        Optional<Fuel> foundOptionalFuel = fuelRepository.findById(id);
-        fuelBusinessRules.fuelShouldBeExist(foundOptionalFuel);
-        fuelBusinessRules.fuelNameCanNotBeDuplicatedWhenUpdated(id, updateFuelRequest.getName());
+        fuelBusinessRules.fuelIdShouldBeExist(id);
 
-        Fuel fuelToUpdate = foundOptionalFuel.get();
-        modelMapperService.forRequest().map(updateFuelRequest, fuelToUpdate);
-        fuelToUpdate.setUpdatedDate(LocalDateTime.now());
-
+        Fuel fuelToUpdate = modelMapperService.forRequest().map(updateFuelRequest, Fuel.class);
+        fuelToUpdate.setId(id);
         Fuel updatedFuel = fuelRepository.save(fuelToUpdate);
         return modelMapperService.forResponse().map(updatedFuel, UpdatedFuelResponse.class);
     }

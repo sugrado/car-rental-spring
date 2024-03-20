@@ -47,9 +47,9 @@ public class ModelManager implements ModelService {
         modelBusinessRules.fuelIdShouldBeExist(updateModelRequest.getFuelId());
         modelBusinessRules.transmissionIdShouldBeExist(updateModelRequest.getTransmissionId());
 
-        Model model = modelMapperService.forRequest().map(updateModelRequest, Model.class);
-        model.setId(id);
-        Model updatedModel = modelRepository.save(model);
+        Model modelToUpdate = modelMapperService.forRequest().map(updateModelRequest, Model.class);
+        modelToUpdate.setId(id);
+        Model updatedModel = modelRepository.save(modelToUpdate);
         return modelMapperService.forResponse().map(updatedModel, UpdatedModelResponse.class);
     }
 

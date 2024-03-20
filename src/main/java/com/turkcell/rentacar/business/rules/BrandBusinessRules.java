@@ -20,6 +20,13 @@ public class BrandBusinessRules {
         }
     }
 
+    public void brandIdShouldBeExist(int brandId) {
+        Optional<Brand> brand = brandRepository.findById(brandId);
+        if (brand.isEmpty()) {
+            throw new RuntimeException(brandNotFoundMessage);
+        }
+    }
+
     public void brandNameCanNotBeDuplicatedWhenInserted(String name) {
         Optional<Brand> foundOptionalBrand = brandRepository.getByNameIgnoreCase(name.trim());
         if (foundOptionalBrand.isPresent()) {
