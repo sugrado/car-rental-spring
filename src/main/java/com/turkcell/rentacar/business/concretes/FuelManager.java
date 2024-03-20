@@ -41,7 +41,7 @@ public class FuelManager implements FuelService {
     @Override
     public UpdatedFuelResponse update(int id, UpdateFuelRequest updateFuelRequest) {
         fuelBusinessRules.fuelIdShouldBeExist(id);
-
+        fuelBusinessRules.fuelNameCanNotBeDuplicatedWhenUpdated(id, updateFuelRequest.getName());
         Fuel fuelToUpdate = modelMapperService.forRequest().map(updateFuelRequest, Fuel.class);
         fuelToUpdate.setId(id);
         Fuel updatedFuel = fuelRepository.save(fuelToUpdate);

@@ -47,7 +47,7 @@ public class BrandManager implements BrandService {
     @Override
     public UpdatedBrandResponse update(int id, UpdateBrandRequest updateBrandRequest) {
         brandBusinessRules.brandIdShouldBeExist(id);
-
+        brandBusinessRules.brandNameCanNotBeDuplicatedWhenUpdated(id, updateBrandRequest.getName());
         Brand brandToUpdate = modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
         brandToUpdate.setId(id);
         Brand updatedBrand = brandRepository.save(brandToUpdate);

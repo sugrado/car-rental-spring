@@ -41,7 +41,7 @@ public class TransmissionManager implements TransmissionService {
     @Override
     public UpdatedTransmissionResponse update(int id, UpdateTransmissionRequest updateTransmissionRequest) {
         transmissionBusinessRules.transmissionIdShouldBeExist(id);
-
+        transmissionBusinessRules.transmissionNameCanNotBeDuplicatedWhenUpdated(id, updateTransmissionRequest.getName());
         Transmission transmissionToUpdate = modelMapperService.forRequest().map(updateTransmissionRequest, Transmission.class);
         transmissionToUpdate.setId(id);
         Transmission updatedTransmission = transmissionRepository.save(transmissionToUpdate);
