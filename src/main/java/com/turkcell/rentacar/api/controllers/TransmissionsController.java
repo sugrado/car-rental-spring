@@ -7,6 +7,7 @@ import com.turkcell.rentacar.business.dtos.responses.CreatedTransmissionResponse
 import com.turkcell.rentacar.business.dtos.responses.GetAllTransmissionsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetTransmissionResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedTransmissionResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +22,13 @@ public class TransmissionsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedTransmissionResponse add(@RequestBody CreateTransmissionRequest transmission) {
+    public CreatedTransmissionResponse add(@Valid @RequestBody CreateTransmissionRequest transmission) {
         return transmissionService.add(transmission);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdatedTransmissionResponse update(@PathVariable int id, @RequestBody UpdateTransmissionRequest transmission) {
+    public UpdatedTransmissionResponse update(@Valid @PathVariable int id, @RequestBody UpdateTransmissionRequest transmission) {
         return transmissionService.update(id, transmission);
     }
 

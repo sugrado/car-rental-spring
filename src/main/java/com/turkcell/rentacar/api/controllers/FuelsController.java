@@ -7,6 +7,7 @@ import com.turkcell.rentacar.business.dtos.responses.CreatedFuelResponse;
 import com.turkcell.rentacar.business.dtos.responses.GetAllFuelsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetFuelResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedFuelResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +22,13 @@ public class FuelsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedFuelResponse add(@RequestBody CreateFuelRequest fuel) {
+    public CreatedFuelResponse add(@Valid @RequestBody CreateFuelRequest fuel) {
         return fuelService.add(fuel);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdatedFuelResponse update(@PathVariable int id, @RequestBody UpdateFuelRequest fuel) {
+    public UpdatedFuelResponse update(@Valid @PathVariable int id, @RequestBody UpdateFuelRequest fuel) {
         return fuelService.update(id, fuel);
     }
 

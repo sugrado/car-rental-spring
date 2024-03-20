@@ -7,6 +7,7 @@ import com.turkcell.rentacar.business.dtos.responses.CreatedModelResponse;
 import com.turkcell.rentacar.business.dtos.responses.GetAllModelsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.GetModelResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedModelResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +22,13 @@ public class ModelsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedModelResponse add(@RequestBody CreateModelRequest model) {
+    public CreatedModelResponse add(@Valid @RequestBody CreateModelRequest model) {
         return modelService.add(model);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdatedModelResponse update(@PathVariable int id, @RequestBody UpdateModelRequest model) {
+    public UpdatedModelResponse update(@Valid @PathVariable int id, @RequestBody UpdateModelRequest model) {
         return modelService.update(id, model);
     }
 

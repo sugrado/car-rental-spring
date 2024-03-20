@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.business.rules;
 
+import com.turkcell.rentacar.core.utilities.exceptions.types.BusinessException;
 import com.turkcell.rentacar.dataAccess.abstracts.FuelRepository;
 import com.turkcell.rentacar.entities.concretes.Fuel;
 import lombok.AllArgsConstructor;
@@ -17,28 +18,28 @@ public class FuelBusinessRules {
 
     public void fuelShouldBeExist(Optional<Fuel> fuel) {
         if (fuel.isEmpty()) {
-            throw new RuntimeException(fuelNotFoundMessage);
+            throw new BusinessException(fuelNotFoundMessage);
         }
     }
 
     public void fuelIdShouldBeExist(int fuelId) {
         Optional<Fuel> fuel = fuelRepository.findById(fuelId);
         if (fuel.isEmpty()) {
-            throw new RuntimeException(fuelNotFoundMessage);
+            throw new BusinessException(fuelNotFoundMessage);
         }
     }
 
     public void fuelNameCanNotBeDuplicatedWhenInserted(String name) {
         Optional<Fuel> foundOptionalFuel = fuelRepository.findByNameIgnoreCase(name.trim());
         if (foundOptionalFuel.isPresent()) {
-            throw new RuntimeException(fuelAlreadyExistsMessage);
+            throw new BusinessException(fuelAlreadyExistsMessage);
         }
     }
 
     public void fuelNameCanNotBeDuplicatedWhenUpdated(int id, String name) {
         boolean exists = fuelRepository.existsByNameIgnoreCaseAndIdIsNot(name.trim(), id);
         if (exists) {
-            throw new RuntimeException(fuelAlreadyExistsMessage);
+            throw new BusinessException(fuelAlreadyExistsMessage);
         }
     }
 }
