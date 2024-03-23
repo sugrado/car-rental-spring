@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.business.dtos.requests;
+package com.turkcell.rentacar.business.dtos.requests.transmissions;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateTransmissionRequest {
+public class CreateTransmissionRequest {
     @NotNull
     @Size(min = 2, max = 30)
     private String name;

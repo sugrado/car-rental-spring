@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.business.dtos.requests;
+package com.turkcell.rentacar.business.dtos.requests.models;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

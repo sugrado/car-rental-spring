@@ -1,21 +1,19 @@
 package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.BrandService;
-import com.turkcell.rentacar.business.dtos.requests.CreateBrandRequest;
-import com.turkcell.rentacar.business.dtos.requests.UpdateBrandRequest;
-import com.turkcell.rentacar.business.dtos.responses.CreatedBrandResponse;
-import com.turkcell.rentacar.business.dtos.responses.GetAllBrandsListItemDto;
-import com.turkcell.rentacar.business.dtos.responses.GetBrandResponse;
-import com.turkcell.rentacar.business.dtos.responses.UpdatedBrandResponse;
+import com.turkcell.rentacar.business.dtos.requests.brands.CreateBrandRequest;
+import com.turkcell.rentacar.business.dtos.requests.brands.UpdateBrandRequest;
+import com.turkcell.rentacar.business.dtos.responses.brands.CreatedBrandResponse;
+import com.turkcell.rentacar.business.dtos.responses.brands.GetAllBrandsListItemDto;
+import com.turkcell.rentacar.business.dtos.responses.brands.GetBrandResponse;
+import com.turkcell.rentacar.business.dtos.responses.brands.UpdatedBrandResponse;
 import com.turkcell.rentacar.business.rules.BrandBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.BrandRepository;
 import com.turkcell.rentacar.entities.concretes.Brand;
 import lombok.AllArgsConstructor;
-import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

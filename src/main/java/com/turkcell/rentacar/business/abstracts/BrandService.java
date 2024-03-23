@@ -1,11 +1,11 @@
 package com.turkcell.rentacar.business.abstracts;
 
-import com.turkcell.rentacar.business.dtos.requests.CreateBrandRequest;
-import com.turkcell.rentacar.business.dtos.requests.UpdateBrandRequest;
-import com.turkcell.rentacar.business.dtos.responses.CreatedBrandResponse;
-import com.turkcell.rentacar.business.dtos.responses.GetAllBrandsListItemDto;
-import com.turkcell.rentacar.business.dtos.responses.GetBrandResponse;
-import com.turkcell.rentacar.business.dtos.responses.UpdatedBrandResponse;
+import com.turkcell.rentacar.business.dtos.requests.brands.CreateBrandRequest;
+import com.turkcell.rentacar.business.dtos.requests.brands.UpdateBrandRequest;
+import com.turkcell.rentacar.business.dtos.responses.brands.CreatedBrandResponse;
+import com.turkcell.rentacar.business.dtos.responses.brands.GetAllBrandsListItemDto;
+import com.turkcell.rentacar.business.dtos.responses.brands.GetBrandResponse;
+import com.turkcell.rentacar.business.dtos.responses.brands.UpdatedBrandResponse;
 
 import java.util.List;
 

@@ -1,12 +1,12 @@
 package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.TransmissionService;
-import com.turkcell.rentacar.business.dtos.requests.CreateTransmissionRequest;
-import com.turkcell.rentacar.business.dtos.requests.UpdateTransmissionRequest;
-import com.turkcell.rentacar.business.dtos.responses.CreatedTransmissionResponse;
-import com.turkcell.rentacar.business.dtos.responses.GetAllTransmissionsListItemDto;
-import com.turkcell.rentacar.business.dtos.responses.GetTransmissionResponse;
-import com.turkcell.rentacar.business.dtos.responses.UpdatedTransmissionResponse;
+import com.turkcell.rentacar.business.dtos.requests.transmissions.CreateTransmissionRequest;
+import com.turkcell.rentacar.business.dtos.requests.transmissions.UpdateTransmissionRequest;
+import com.turkcell.rentacar.business.dtos.responses.transmissions.CreatedTransmissionResponse;
+import com.turkcell.rentacar.business.dtos.responses.transmissions.GetAllTransmissionsListItemDto;
+import com.turkcell.rentacar.business.dtos.responses.transmissions.GetTransmissionResponse;
+import com.turkcell.rentacar.business.dtos.responses.transmissions.UpdatedTransmissionResponse;
 import com.turkcell.rentacar.business.rules.TransmissionBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.TransmissionRepository;

@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.business.dtos.responses;
+package com.turkcell.rentacar.business.dtos.responses.transmissions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetBrandResponse {
+public class GetTransmissionResponse {
     private int id;
     private String name;
     private LocalDateTime createdDate;
