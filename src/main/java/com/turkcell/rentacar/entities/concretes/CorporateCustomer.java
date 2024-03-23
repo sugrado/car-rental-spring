@@ -12,6 +12,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "corporate_customers")
 public class CorporateCustomer extends BaseEntity {
+    @Column(name = "company_name")
+    private String companyName;
+
+    @Column(name = "tax_no")
+    private String taxNo;
+
     @OneToOne
     @MapsId
     @JoinColumn(name = "customer_id")
