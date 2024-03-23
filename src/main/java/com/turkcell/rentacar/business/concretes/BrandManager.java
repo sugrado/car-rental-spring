@@ -44,6 +44,7 @@ public class BrandManager implements BrandService {
     // dto'lar ve mapper (IoC içerir) -> Ömer Faruk
     // business rules -> Ömer Ç.
     // api -> Rozerin
+    // exception handling -> Mert
     @Override
     public UpdatedBrandResponse update(int id, UpdateBrandRequest updateBrandRequest) {
         brandBusinessRules.brandIdShouldBeExist(id);
@@ -64,9 +65,11 @@ public class BrandManager implements BrandService {
     @Override
     public List<GetAllBrandsListItemDto> getAll() {
         List<Brand> brands = brandRepository.findAll();
-        Type listType = new TypeToken<List<GetAllBrandsListItemDto>>() {
-        }.getType();
-        return modelMapperService.forResponse().map(brands, listType);
+        // example of using stream api for mapping
+        return brands.stream()
+                .map(brand -> this.modelMapperService.forResponse()
+                        .map(brand, GetAllBrandsListItemDto.class))
+                .toList();
     }
 
     @Override
