@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.business.messages;
+package com.turkcell.rentacar.business.constants.messages;
 
 public class ModelMessages {
     public static final String modelNotFound = "Model not found";

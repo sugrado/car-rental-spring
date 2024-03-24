@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.business.messages;
+package com.turkcell.rentacar.business.constants.messages;
 
 public class CarMessages {
     public static final String carNotFound = "Car not found";
