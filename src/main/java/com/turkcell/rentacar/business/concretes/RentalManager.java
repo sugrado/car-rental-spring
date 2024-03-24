@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.business.concretes;
 
+import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.dtos.requests.rentals.CreateRentalRequest;
 import com.turkcell.rentacar.business.dtos.requests.rentals.UpdateRentalRequest;
@@ -7,10 +8,12 @@ import com.turkcell.rentacar.business.dtos.responses.rentals.CreatedRentalRespon
 import com.turkcell.rentacar.business.dtos.responses.rentals.GetAllRentalsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.rentals.GetRentalResponse;
 import com.turkcell.rentacar.business.dtos.responses.rentals.UpdatedRentalResponse;
+import com.turkcell.rentacar.business.rules.CarBusinessRules;
 import com.turkcell.rentacar.business.rules.RentalBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.RentalRepository;
 import com.turkcell.rentacar.entities.concretes.Rental;
+import com.turkcell.rentacar.entities.enums.CarState;
 import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
@@ -25,11 +28,16 @@ public class RentalManager implements RentalService {
     private final RentalRepository rentalRepository;
     private final ModelMapperService modelMapperService;
     private final RentalBusinessRules rentalBusinessRules;
+    private final CarBusinessRules carBusinessRules;
+    private final CarService carService;
 
     @Override
     public CreatedRentalResponse add(CreateRentalRequest createRentalRequest) {
+        carBusinessRules.carIdShouldBeExist(createRentalRequest.getCarId());
+        carBusinessRules.carShouldBeAvailable(createRentalRequest.getCarId());
         Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
         rental.setCreatedDate(LocalDateTime.now());
+        carService.updateState(createRentalRequest.getCarId(), CarState.RENTED);
 
         Rental createdRental = rentalRepository.save(rental);
         return modelMapperService.forResponse().map(createdRental, CreatedRentalResponse.class);

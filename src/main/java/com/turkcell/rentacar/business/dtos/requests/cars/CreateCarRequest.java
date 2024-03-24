@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateCarRequest {
     @NotNull
-    @Size(min = 1800, max = 2025)
     private int modelYear;
 
     @NotNull
@@ -23,4 +22,7 @@ public class CreateCarRequest {
 
     @NotNull
     private int modelId;
+
+    @NotNull
+    private int minFindeksScore;;
 }

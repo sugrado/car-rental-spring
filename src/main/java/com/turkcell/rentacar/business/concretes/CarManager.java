@@ -11,6 +11,7 @@ import com.turkcell.rentacar.business.rules.CarBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.CarRepository;
 import com.turkcell.rentacar.entities.concretes.Car;
+import com.turkcell.rentacar.entities.enums.CarState;
 import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,19 @@ public class CarManager implements CarService {
     public CreatedCarResponse add(CreateCarRequest createCarRequest) {
         Car car = modelMapperService.forRequest().map(createCarRequest, Car.class);
         car.setCreatedDate(LocalDateTime.now());
+        car.setState(CarState.AVAILABLE);
 
         Car createdCar = carRepository.save(car);
         return modelMapperService.forResponse().map(createdCar, CreatedCarResponse.class);
+    }
+
+    @Override
+    public void updateState(int carId, CarState carState) {
+        Optional<Car> foundOptionalCar = carRepository.findById(carId);
+        carBusinessRules.carShouldBeExist(foundOptionalCar);
+        Car car = foundOptionalCar.get();
+        car.setState(carState);
+        carRepository.save(car);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.business.concretes;
 
+import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.MaintenanceService;
 import com.turkcell.rentacar.business.dtos.requests.maintenances.CreateMaintenanceRequest;
 import com.turkcell.rentacar.business.dtos.requests.maintenances.UpdateMaintenanceRequest;
@@ -7,10 +8,12 @@ import com.turkcell.rentacar.business.dtos.responses.maintenances.CreatedMainten
 import com.turkcell.rentacar.business.dtos.responses.maintenances.GetAllMaintenancesListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.maintenances.GetMaintenanceResponse;
 import com.turkcell.rentacar.business.dtos.responses.maintenances.UpdatedMaintenanceResponse;
+import com.turkcell.rentacar.business.rules.CarBusinessRules;
 import com.turkcell.rentacar.business.rules.MaintenanceBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.MaintenanceRepository;
 import com.turkcell.rentacar.entities.concretes.Maintenance;
+import com.turkcell.rentacar.entities.enums.CarState;
 import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
@@ -25,11 +28,17 @@ public class MaintenanceManager implements MaintenanceService {
     private final MaintenanceRepository maintenanceRepository;
     private final ModelMapperService modelMapperService;
     private final MaintenanceBusinessRules maintenanceBusinessRules;
+    private final CarBusinessRules carBusinessRules;
+    private final CarService carService;
 
     @Override
     public CreatedMaintenanceResponse add(CreateMaintenanceRequest createMaintenanceRequest) {
+        carBusinessRules.carIdShouldBeExist(createMaintenanceRequest.getCarId());
+        carBusinessRules.carShouldBeAvailable(createMaintenanceRequest.getCarId());
         Maintenance maintenance = modelMapperService.forRequest().map(createMaintenanceRequest, Maintenance.class);
         maintenance.setCreatedDate(LocalDateTime.now());
+
+        carService.updateState(createMaintenanceRequest.getCarId(), CarState.MAINTENANCE);
 
         Maintenance createdMaintenance = maintenanceRepository.save(maintenance);
         return modelMapperService.forResponse().map(createdMaintenance, CreatedMaintenanceResponse.class);
