@@ -29,7 +29,9 @@ public class CarManager implements CarService {
 
     @Override
     public CreatedCarResponse add(CreateCarRequest createCarRequest) {
+        carBusinessRules.plateShouldBeUnique(createCarRequest.getPlate());
         Car car = modelMapperService.forRequest().map(createCarRequest, Car.class);
+        car.setId(0); // model mapper bug
         car.setCreatedDate(LocalDateTime.now());
         car.setState(CarState.AVAILABLE);
 

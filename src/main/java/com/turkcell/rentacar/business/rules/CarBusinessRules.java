@@ -34,4 +34,11 @@ public class CarBusinessRules {
             throw new BusinessException(CarMessages.carIsNotAvailable);
         }
     }
+
+    public void plateShouldBeUnique(String plate) {
+        Optional<Car> car = carRepository.findByPlate(plate);
+        if (car.isPresent()) {
+            throw new BusinessException(CarMessages.plateIsAlreadyExist);
+        }
+    }
 }
