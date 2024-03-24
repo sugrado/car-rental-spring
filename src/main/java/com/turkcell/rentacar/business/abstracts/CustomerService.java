@@ -13,4 +13,6 @@ public interface CustomerService {
     List<GetAllCustomersListItemDto> getAll();
 
     GetCustomerResponse get(int id);
+
+    int getFindeksScore(int customerId);
 }
