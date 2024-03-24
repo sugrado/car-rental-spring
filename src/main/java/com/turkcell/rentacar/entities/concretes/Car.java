@@ -36,4 +36,7 @@ public class Car extends BaseEntity {
 
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
     private List<Maintenance> maintenances;
+
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
+    private List<Rental> rentals;
 }
