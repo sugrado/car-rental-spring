@@ -18,7 +18,7 @@ public class CorporateCustomer extends BaseEntity {
     @Column(name = "tax_no")
     private String taxNo;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 }

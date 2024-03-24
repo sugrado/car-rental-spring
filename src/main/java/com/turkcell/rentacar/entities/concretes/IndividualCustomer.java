@@ -26,7 +26,7 @@ public class IndividualCustomer extends BaseEntity {
     @Column(name = "birth_date")
     private LocalDateTime birthDate;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 }

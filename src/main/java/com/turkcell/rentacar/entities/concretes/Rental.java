@@ -23,11 +23,11 @@ public class Rental extends BaseEntity {
     @Column(name = "return_date")
     private LocalDateTime returnDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 }

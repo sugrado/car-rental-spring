@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyGroup;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +24,7 @@ public class Maintenance extends BaseEntity {
     @Column(name = "actual_return_date")
     private LocalDateTime actualReturnDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
     private Car car;
 }

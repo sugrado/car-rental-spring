@@ -24,6 +24,6 @@ public class Customer extends BaseEntity {
     @OneToOne(mappedBy = "customer")
     private IndividualCustomer individualCustomer;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Rental> rentals;
 }

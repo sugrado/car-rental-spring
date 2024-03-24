@@ -30,10 +30,10 @@ public class Car extends BaseEntity {
     @Column(name = "min_findeks_score")
     private int minFindeksScore;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id")
     private Model model;
 
-    @OneToMany(mappedBy = "car")
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
     private List<Maintenance> maintenances;
 }
