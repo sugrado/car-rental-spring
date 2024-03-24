@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +22,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Service
 public class ModelManager implements ModelService {
-    private final ModelRepository modelRepository; // IoC
+    private final ModelRepository modelRepository;
     private final ModelBusinessRules modelBusinessRules;
     private final ModelMapperService modelMapperService;
 
@@ -63,9 +62,8 @@ public class ModelManager implements ModelService {
     @Override
     public List<GetAllModelsListItemDto> getAll() {
         List<Model> models = modelRepository.findAll();
-        Type listType = new TypeToken<List<GetAllModelsListItemDto>>() {
-        }.getType();
-        return modelMapperService.forResponse().map(models, listType);
+        return modelMapperService.forResponse().map(models, new TypeToken<List<GetAllModelsListItemDto>>() {
+        }.getType());
     }
 
     @Override

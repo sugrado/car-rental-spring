@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +22,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Service
 public class TransmissionManager implements TransmissionService {
-    private final TransmissionRepository transmissionRepository; // IoC
+    private final TransmissionRepository transmissionRepository;
     private final ModelMapperService modelMapperService;
     private final TransmissionBusinessRules transmissionBusinessRules;
 
@@ -58,9 +57,8 @@ public class TransmissionManager implements TransmissionService {
     @Override
     public List<GetAllTransmissionsListItemDto> getAll() {
         List<Transmission> transmissions = transmissionRepository.findAll();
-        Type listType = new TypeToken<List<GetAllTransmissionsListItemDto>>() {
-        }.getType();
-        return modelMapperService.forResponse().map(transmissions, listType);
+        return modelMapperService.forResponse().map(transmissions, new TypeToken<List<GetAllTransmissionsListItemDto>>() {
+        }.getType());
     }
 
     @Override

@@ -21,7 +21,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Service
 public class BrandManager implements BrandService {
-    private final BrandRepository brandRepository; // IoC
+    private final BrandRepository brandRepository;
     private final ModelMapperService modelMapperService;
     private final BrandBusinessRules brandBusinessRules;
 
@@ -36,13 +36,6 @@ public class BrandManager implements BrandService {
         return modelMapperService.forResponse().map(createdBrand, CreatedBrandResponse.class);
     }
 
-    // entity -> Özgür
-    // repository (reserved words) -> Görkem
-    // service (IoC içerir) -> Ege
-    // dto'lar ve mapper (IoC içerir) -> Ömer Faruk
-    // business rules -> Ömer Ç.
-    // api -> Rozerin
-    // exception handling -> Mert
     @Override
     public UpdatedBrandResponse update(int id, UpdateBrandRequest updateBrandRequest) {
         brandBusinessRules.brandIdShouldBeExist(id);
@@ -63,7 +56,7 @@ public class BrandManager implements BrandService {
     @Override
     public List<GetAllBrandsListItemDto> getAll() {
         List<Brand> brands = brandRepository.findAll();
-        // example of using stream api for mapping
+        // example of using stream api
         return brands.stream()
                 .map(brand -> this.modelMapperService.forResponse()
                         .map(brand, GetAllBrandsListItemDto.class))

@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +22,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Service
 public class FuelManager implements FuelService {
-    private final FuelRepository fuelRepository; // IoC
+    private final FuelRepository fuelRepository;
     private final ModelMapperService modelMapperService;
     private final FuelBusinessRules fuelBusinessRules;
 
@@ -58,9 +57,8 @@ public class FuelManager implements FuelService {
     @Override
     public List<GetAllFuelsListItemDto> getAll() {
         List<Fuel> fuels = fuelRepository.findAll();
-        Type listType = new TypeToken<List<GetAllFuelsListItemDto>>() {
-        }.getType();
-        return modelMapperService.forResponse().map(fuels, listType);
+        return modelMapperService.forResponse().map(fuels, new TypeToken<List<GetAllFuelsListItemDto>>() {
+        }.getType());
     }
 
     @Override
