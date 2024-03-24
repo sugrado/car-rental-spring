@@ -1,6 +1,6 @@
 package com.turkcell.rentacar.business.rules;
 
-import com.turkcell.rentacar.business.messages.FuelMessages;
+import com.turkcell.rentacar.business.constants.messages.FuelMessages;
 import com.turkcell.rentacar.core.utilities.exceptions.types.BusinessException;
 import com.turkcell.rentacar.dataAccess.abstracts.FuelRepository;
 import com.turkcell.rentacar.entities.concretes.Fuel;

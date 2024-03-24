@@ -1,7 +1,7 @@
 package com.turkcell.rentacar.business.dtos.requests.cars;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import com.turkcell.rentacar.business.constants.regexes.CarRegexes;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,16 +11,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateCarRequest {
     @NotNull
-    @Size(min = 1800, max = 2025)
     private int modelYear;
 
     @NotNull
-    @Size(max = 9)
+    @Pattern(regexp = CarRegexes.plate)
     private String plate;
 
     @NotNull
+    @DecimalMin("100.0")
+    @DecimalMax("10000.0")
     private double dailyPrice;
 
     @NotNull
     private int modelId;
+
+    @NotNull
+    @Min(1)
+    @Max(1900)
+    private int minFindeksScore;
 }

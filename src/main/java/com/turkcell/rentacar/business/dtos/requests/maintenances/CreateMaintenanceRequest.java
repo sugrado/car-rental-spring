@@ -15,8 +15,5 @@ public class CreateMaintenanceRequest {
     private LocalDateTime dateSent;
 
     @NotNull
-    private LocalDateTime dateReturned;
-
-    @NotNull
     private int carId;
 }

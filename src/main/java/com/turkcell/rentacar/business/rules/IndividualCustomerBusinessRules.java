@@ -1,6 +1,6 @@
 package com.turkcell.rentacar.business.rules;
 
-import com.turkcell.rentacar.business.messages.IndividualCustomerMessages;
+import com.turkcell.rentacar.business.constants.messages.IndividualCustomerMessages;
 import com.turkcell.rentacar.core.utilities.exceptions.types.BusinessException;
 import com.turkcell.rentacar.dataAccess.abstracts.IndividualCustomerRepository;
 import com.turkcell.rentacar.entities.concretes.IndividualCustomer;
