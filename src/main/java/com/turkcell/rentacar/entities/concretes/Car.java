@@ -27,6 +27,9 @@ public class Car extends BaseEntity {
     @Column(name = "dailyPrice")
     private double dailyPrice;
 
+    @Column(name = "min_findeks_score")
+    private int minFindeksScore;
+
     @ManyToOne()
     @JoinColumn(name = "model_id")
     private Model model;
