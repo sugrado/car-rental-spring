@@ -18,7 +18,7 @@ public class ModelMapperManager implements ModelMapperService {
 
     @Override
     public ModelMapper forRequest() {
-        this.modelMapper.getConfiguration().setAmbiguityIgnored(true).setMatchingStrategy(MatchingStrategies.STANDARD);
+        this.modelMapper.getConfiguration().setAmbiguityIgnored(true).setMatchingStrategy(MatchingStrategies.STRICT);
         return this.modelMapper;
     }
 }
