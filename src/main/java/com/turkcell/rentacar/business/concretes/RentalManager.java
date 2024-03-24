@@ -35,8 +35,10 @@ public class RentalManager implements RentalService {
     public CreatedRentalResponse add(CreateRentalRequest createRentalRequest) {
         carBusinessRules.carIdShouldBeExist(createRentalRequest.getCarId());
         carBusinessRules.carShouldBeAvailable(createRentalRequest.getCarId());
+        rentalBusinessRules.customerFindeksScoreShouldBeEnough(createRentalRequest.getCustomerId(), createRentalRequest.getCarId());
         Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
         rental.setCreatedDate(LocalDateTime.now());
+
         carService.updateState(createRentalRequest.getCarId(), CarState.RENTED);
 
         Rental createdRental = rentalRepository.save(rental);

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -20,6 +22,9 @@ public class IndividualCustomer extends BaseEntity {
 
     @Column(name = "identity_number")
     private String identityNumber;
+
+    @Column(name = "birth_date")
+    private LocalDateTime birthDate;
 
     @OneToOne
     @JoinColumn(name = "customer_id")

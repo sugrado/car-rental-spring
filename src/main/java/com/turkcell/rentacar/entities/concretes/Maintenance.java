@@ -14,11 +14,14 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "maintenances")
 public class Maintenance extends BaseEntity {
-    @Column(name = "dateSent")
-    private LocalDateTime dateSent;
+    @Column(name = "sent_date")
+    private LocalDateTime sentDate;
 
-    @Column(name = "dateReturned")
-    private LocalDateTime dateReturned;
+    @Column(name = "expected_return_date")
+    private LocalDateTime expectedReturnDate;
+
+    @Column(name = "actual_return_date")
+    private LocalDateTime actualReturnDate;
 
     @ManyToOne
     @JoinColumn(name = "car_id")
