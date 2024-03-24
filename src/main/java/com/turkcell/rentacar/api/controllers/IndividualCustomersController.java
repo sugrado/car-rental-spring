@@ -28,7 +28,7 @@ public class IndividualCustomersController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdatedIndividualCustomerResponse update(@Valid @PathVariable int id, @RequestBody UpdateIndividualCustomerRequest individualCustomer) {
+    public UpdatedIndividualCustomerResponse update(@PathVariable int id, @Valid @RequestBody UpdateIndividualCustomerRequest individualCustomer) {
         return individualCustomerService.update(id, individualCustomer);
     }
 

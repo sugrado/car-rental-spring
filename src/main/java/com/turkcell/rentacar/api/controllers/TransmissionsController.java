@@ -28,7 +28,7 @@ public class TransmissionsController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdatedTransmissionResponse update(@Valid @PathVariable int id, @RequestBody UpdateTransmissionRequest transmission) {
+    public UpdatedTransmissionResponse update(@PathVariable int id, @Valid @RequestBody UpdateTransmissionRequest transmission) {
         return transmissionService.update(id, transmission);
     }
 

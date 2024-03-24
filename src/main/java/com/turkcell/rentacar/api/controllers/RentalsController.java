@@ -28,7 +28,7 @@ public class RentalsController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdatedRentalResponse update(@Valid @PathVariable int id, @RequestBody UpdateRentalRequest rental) {
+    public UpdatedRentalResponse update(@PathVariable int id, @Valid @RequestBody UpdateRentalRequest rental) {
         return rentalService.update(id, rental);
     }
 

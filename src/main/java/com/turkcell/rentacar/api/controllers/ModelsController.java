@@ -28,7 +28,7 @@ public class ModelsController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdatedModelResponse update(@Valid @PathVariable int id, @RequestBody UpdateModelRequest model) {
+    public UpdatedModelResponse update(@PathVariable int id, @Valid @RequestBody UpdateModelRequest model) {
         return modelService.update(id, model);
     }
 

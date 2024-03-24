@@ -28,7 +28,7 @@ public class FuelsController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdatedFuelResponse update(@Valid @PathVariable int id, @RequestBody UpdateFuelRequest fuel) {
+    public UpdatedFuelResponse update(@PathVariable int id, @Valid @RequestBody UpdateFuelRequest fuel) {
         return fuelService.update(id, fuel);
     }
 

@@ -28,7 +28,7 @@ public class MaintenancesController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdatedMaintenanceResponse update(@Valid @PathVariable int id, @RequestBody UpdateMaintenanceRequest maintenance) {
+    public UpdatedMaintenanceResponse update(@PathVariable int id, @Valid @RequestBody UpdateMaintenanceRequest maintenance) {
         return maintenanceService.update(id, maintenance);
     }
 

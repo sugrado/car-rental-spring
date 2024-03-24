@@ -28,7 +28,7 @@ public class CarsController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdatedCarResponse update(@Valid @PathVariable int id, @RequestBody UpdateCarRequest car) {
+    public UpdatedCarResponse update(@PathVariable int id, @Valid @RequestBody UpdateCarRequest car) {
         return carService.update(id, car);
     }
 

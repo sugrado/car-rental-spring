@@ -28,7 +28,7 @@ public class CorporateCustomersController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdatedCorporateCustomerResponse update(@Valid @PathVariable int id, @RequestBody UpdateCorporateCustomerRequest corporateCustomer) {
+    public UpdatedCorporateCustomerResponse update(@PathVariable int id, @Valid @RequestBody UpdateCorporateCustomerRequest corporateCustomer) {
         return corporateCustomerService.update(id, corporateCustomer);
     }
 

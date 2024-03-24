@@ -28,7 +28,7 @@ public class BrandsController {
 
     @PutMapping("/{id}") // api/v1/brands/5
     @ResponseStatus(HttpStatus.OK)
-    public UpdatedBrandResponse update(@Valid @PathVariable int id, @RequestBody UpdateBrandRequest brand) {
+    public UpdatedBrandResponse update(@PathVariable int id, @Valid @RequestBody UpdateBrandRequest brand) {
         return brandService.update(id, brand);
     }
 
