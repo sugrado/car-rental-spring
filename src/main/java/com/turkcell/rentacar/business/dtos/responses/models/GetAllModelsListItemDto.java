@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 public class GetAllModelsListItemDto {
     private int id;
     private String name;
-    private Double dailyPrice;
+    private int brandId;
+    private int fuelId;
+    private int transmissionId;
     private LocalDateTime createdDate;
 }

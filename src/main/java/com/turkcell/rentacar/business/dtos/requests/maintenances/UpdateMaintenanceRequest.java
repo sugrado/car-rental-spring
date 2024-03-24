@@ -12,11 +12,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UpdateMaintenanceRequest {
     @NotNull
-    private LocalDateTime dateSent;
-
-    @NotNull
-    private LocalDateTime dateReturned;
-
-    @NotNull
     private int carId;
+
+    @NotNull
+    private LocalDateTime sentDate;
+
+    @NotNull
+    private LocalDateTime expectedReturnDate;
+
+    @NotNull
+    private LocalDateTime actualReturnDate;
 }

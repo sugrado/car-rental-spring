@@ -14,9 +14,6 @@ public class CreateModelRequest {
     @Size(min = 2, max = 30)
     private String name;
     @NotNull
-    @Size(min = 0, max = 3000)
-    private Double dailyPrice;
-    @NotNull
     private int brandId;
     @NotNull
     private int fuelId;
