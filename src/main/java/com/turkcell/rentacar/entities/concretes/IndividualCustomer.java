@@ -22,7 +22,6 @@ public class IndividualCustomer extends BaseEntity {
     private String identityNumber;
 
     @OneToOne
-    @MapsId
     @JoinColumn(name = "customer_id")
     private Customer customer;
 }

@@ -19,7 +19,6 @@ public class CorporateCustomer extends BaseEntity {
     private String taxNo;
 
     @OneToOne
-    @MapsId
     @JoinColumn(name = "customer_id")
     private Customer customer;
 }
