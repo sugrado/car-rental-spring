@@ -34,7 +34,8 @@ public class RentalManager implements RentalService {
     @Override
     public CreatedRentalResponse add(CreateRentalRequest createRentalRequest) {
         carBusinessRules.carIdShouldBeExist(createRentalRequest.getCarId());
-        carBusinessRules.carShouldBeAvailable(createRentalRequest.getCarId());
+        carBusinessRules.carShouldNotBeInMaintenance(createRentalRequest.getCarId());
+        carBusinessRules.carShouldNotBeRented(createRentalRequest.getCarId());
         rentalBusinessRules.customerFindeksScoreShouldBeEnough(createRentalRequest.getCustomerId(), createRentalRequest.getCarId());
         Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
         rental.setCreatedDate(LocalDateTime.now());

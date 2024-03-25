@@ -34,7 +34,8 @@ public class MaintenanceManager implements MaintenanceService {
     @Override
     public CreatedMaintenanceResponse add(CreateMaintenanceRequest createMaintenanceRequest) {
         carBusinessRules.carIdShouldBeExist(createMaintenanceRequest.getCarId());
-        carBusinessRules.carShouldBeAvailable(createMaintenanceRequest.getCarId());
+        carBusinessRules.carShouldNotBeInMaintenance(createMaintenanceRequest.getCarId());
+        carBusinessRules.carShouldNotBeRented(createMaintenanceRequest.getCarId());
         Maintenance maintenance = modelMapperService.forRequest().map(createMaintenanceRequest, Maintenance.class);
         maintenance.setCreatedDate(LocalDateTime.now());
 
