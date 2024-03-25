@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.business.abstracts;
+package com.turkcell.rentacar.adapters.findeks;
 
 public interface FindeksScoreService {
     int getScoreForIndividual(String identityNumber);

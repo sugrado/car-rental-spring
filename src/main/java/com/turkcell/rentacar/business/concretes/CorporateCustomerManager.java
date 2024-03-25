@@ -1,8 +1,8 @@
 package com.turkcell.rentacar.business.concretes;
 
+import com.turkcell.rentacar.adapters.findeks.FindeksScoreService;
 import com.turkcell.rentacar.business.abstracts.CorporateCustomerService;
 import com.turkcell.rentacar.business.abstracts.CustomerService;
-import com.turkcell.rentacar.business.abstracts.FindeksScoreService;
 import com.turkcell.rentacar.business.dtos.requests.corporateCustomers.CreateCorporateCustomerRequest;
 import com.turkcell.rentacar.business.dtos.requests.corporateCustomers.UpdateCorporateCustomerRequest;
 import com.turkcell.rentacar.business.dtos.requests.customers.CreateCustomerRequest;

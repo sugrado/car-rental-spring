@@ -1,6 +1,5 @@
-package com.turkcell.rentacar.adapters;
+package com.turkcell.rentacar.adapters.findeks;
 
-import com.turkcell.rentacar.business.abstracts.FindeksScoreService;
 import com.turkcell.rentacar.outServices.FindeksScoreClient;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
