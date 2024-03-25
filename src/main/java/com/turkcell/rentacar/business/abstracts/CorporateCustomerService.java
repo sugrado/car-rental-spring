@@ -19,4 +19,6 @@ public interface CorporateCustomerService {
     List<GetAllCorporateCustomersListItemDto> getAll();
 
     GetCorporateCustomerResponse get(int id);
+
+    void updateFindeksScore(int id);
 }

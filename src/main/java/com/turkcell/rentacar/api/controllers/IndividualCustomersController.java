@@ -44,6 +44,12 @@ public class IndividualCustomersController {
         return individualCustomerService.get(id);
     }
 
+    @PatchMapping("/{id}/findeks-score")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateFindeksScore(@PathVariable int id) {
+        individualCustomerService.updateFindeksScore(id);
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<GetAllIndividualCustomersListItemDto> getAll() {

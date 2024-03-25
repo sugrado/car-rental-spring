@@ -2,6 +2,7 @@ package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.CorporateCustomerService;
 import com.turkcell.rentacar.business.abstracts.CustomerService;
+import com.turkcell.rentacar.business.abstracts.FindeksScoreService;
 import com.turkcell.rentacar.business.dtos.requests.corporateCustomers.CreateCorporateCustomerRequest;
 import com.turkcell.rentacar.business.dtos.requests.corporateCustomers.UpdateCorporateCustomerRequest;
 import com.turkcell.rentacar.business.dtos.requests.customers.CreateCustomerRequest;
@@ -31,6 +32,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
     private final ModelMapperService modelMapperService;
     private final CorporateCustomerBusinessRules corporateCustomerBusinessRules;
     private final CustomerService customerService;
+    private final FindeksScoreService findeksScoreService;
 
     @Override
     public CreatedCorporateCustomerResponse add(CreateCorporateCustomerRequest createCorporateCustomerRequest) {
@@ -73,5 +75,13 @@ public class CorporateCustomerManager implements CorporateCustomerService {
         Optional<CorporateCustomer> foundOptionalCorporateCustomer = corporateCustomerRepository.findById(id);
         corporateCustomerBusinessRules.corporateCustomerShouldBeExist(foundOptionalCorporateCustomer);
         return modelMapperService.forResponse().map(foundOptionalCorporateCustomer.get(), GetCorporateCustomerResponse.class);
+    }
+
+    @Override
+    public void updateFindeksScore(int id) {
+        Customer customer = customerService.getRecord(id);
+        int newScore = findeksScoreService.getScoreForCorporate(customer.getCorporateCustomer().getTaxNo());
+        customer.setFindeksScore(newScore);
+        customerService.updateRecord(customer);
     }
 }

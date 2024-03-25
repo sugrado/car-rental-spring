@@ -19,4 +19,6 @@ public interface IndividualCustomerService {
     List<GetAllIndividualCustomersListItemDto> getAll();
 
     GetIndividualCustomerResponse get(int id);
+
+    void updateFindeksScore(int id);
 }

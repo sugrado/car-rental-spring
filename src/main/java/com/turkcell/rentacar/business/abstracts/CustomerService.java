@@ -4,6 +4,7 @@ import com.turkcell.rentacar.business.dtos.requests.customers.CreateCustomerRequ
 import com.turkcell.rentacar.business.dtos.responses.customers.CreatedCustomerResponse;
 import com.turkcell.rentacar.business.dtos.responses.customers.GetAllCustomersListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.customers.GetCustomerResponse;
+import com.turkcell.rentacar.entities.concretes.Customer;
 
 import java.util.List;
 
@@ -13,6 +14,10 @@ public interface CustomerService {
     List<GetAllCustomersListItemDto> getAll();
 
     GetCustomerResponse get(int id);
+
+    Customer getRecord(int id);
+
+    Customer updateRecord(Customer customer);
 
     int getFindeksScore(int customerId);
 }

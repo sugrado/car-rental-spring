@@ -15,7 +15,6 @@ import java.util.List;
 public class CustomersController {
     private CustomerService customerService;
 
-
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public GetCustomerResponse get(@PathVariable int id) {
@@ -28,4 +27,3 @@ public class CustomersController {
         return customerService.getAll();
     }
 }
-

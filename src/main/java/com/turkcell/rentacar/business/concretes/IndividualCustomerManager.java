@@ -1,6 +1,7 @@
 package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.CustomerService;
+import com.turkcell.rentacar.business.abstracts.FindeksScoreService;
 import com.turkcell.rentacar.business.abstracts.IndividualCustomerService;
 import com.turkcell.rentacar.business.dtos.requests.customers.CreateCustomerRequest;
 import com.turkcell.rentacar.business.dtos.requests.individualCustomers.CreateIndividualCustomerRequest;
@@ -31,6 +32,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
     private final ModelMapperService modelMapperService;
     private final IndividualCustomerBusinessRules individualCustomerBusinessRules;
     private final CustomerService customerService;
+    private final FindeksScoreService findeksScoreService;
 
     @Override
     public CreatedIndividualCustomerResponse add(CreateIndividualCustomerRequest createIndividualCustomerRequest) {
@@ -73,5 +75,13 @@ public class IndividualCustomerManager implements IndividualCustomerService {
         Optional<IndividualCustomer> foundOptionalIndividualCustomer = individualCustomerRepository.findById(id);
         individualCustomerBusinessRules.individualCustomerShouldBeExist(foundOptionalIndividualCustomer);
         return modelMapperService.forResponse().map(foundOptionalIndividualCustomer.get(), GetIndividualCustomerResponse.class);
+    }
+
+    @Override
+    public void updateFindeksScore(int id) {
+        Customer customer = customerService.getRecord(id);
+        int newScore = findeksScoreService.getScoreForIndividual(customer.getIndividualCustomer().getIdentityNumber());
+        customer.setFindeksScore(newScore);
+        customerService.updateRecord(customer);
     }
 }

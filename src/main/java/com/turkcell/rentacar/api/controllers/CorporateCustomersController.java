@@ -44,6 +44,12 @@ public class CorporateCustomersController {
         return corporateCustomerService.get(id);
     }
 
+    @PatchMapping("/{id}/findeks-score")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateFindeksScore(@PathVariable int id) {
+        corporateCustomerService.updateFindeksScore(id);
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<GetAllCorporateCustomersListItemDto> getAll() {
