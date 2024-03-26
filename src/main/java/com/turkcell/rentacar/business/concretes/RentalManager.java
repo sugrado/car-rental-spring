@@ -1,6 +1,7 @@
 package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.CarService;
+import com.turkcell.rentacar.business.abstracts.InvoiceService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.dtos.requests.rentals.CreateRentalRequest;
 import com.turkcell.rentacar.business.dtos.requests.rentals.UpdateRentalRequest;
@@ -14,6 +15,7 @@ import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.RentalRepository;
 import com.turkcell.rentacar.entities.concretes.Rental;
 import com.turkcell.rentacar.entities.enums.CarState;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
@@ -30,19 +32,23 @@ public class RentalManager implements RentalService {
     private final RentalBusinessRules rentalBusinessRules;
     private final CarBusinessRules carBusinessRules;
     private final CarService carService;
+    private final InvoiceService invoiceService;
 
     @Override
+    @Transactional
     public CreatedRentalResponse add(CreateRentalRequest createRentalRequest) {
         carBusinessRules.carIdShouldBeExist(createRentalRequest.getCarId());
         carBusinessRules.carShouldNotBeInMaintenance(createRentalRequest.getCarId());
         carBusinessRules.carShouldNotBeRented(createRentalRequest.getCarId());
         rentalBusinessRules.customerFindeksScoreShouldBeEnough(createRentalRequest.getCustomerId(), createRentalRequest.getCarId());
         Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
-        rental.setCreatedDate(LocalDateTime.now());
+         // TODO: manager'lardaki updatedDate ve createdDate'lerin hepsi kaldırılacak.
 
         carService.updateState(createRentalRequest.getCarId(), CarState.RENTED);
-
+        // TODO: rental'e sonradan ek hizmet satın alırken rental süresinin geçmemiş olması lazım
+        // TODO: rental ve maintenance'a return methodu yazılacak
         Rental createdRental = rentalRepository.save(rental);
+        invoiceService.add(createdRental, createRentalRequest.getCreditCardId());
         return modelMapperService.forResponse().map(createdRental, CreatedRentalResponse.class);
     }
 

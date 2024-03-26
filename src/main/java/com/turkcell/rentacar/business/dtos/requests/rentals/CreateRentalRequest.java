@@ -22,4 +22,7 @@ public class CreateRentalRequest {
 
     @NotNull
     private int customerId;
+
+    @NotNull
+    private int creditCardId;
 }
