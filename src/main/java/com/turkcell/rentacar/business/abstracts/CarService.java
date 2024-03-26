@@ -22,4 +22,6 @@ public interface CarService {
     List<GetAllCarsListItemDto> getAll();
 
     GetCarResponse get(int id);
+
+    double calculatePriceByDays(int carId, short days);
 }

@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 @MappedSuperclass
+//@SQLDelete(sql = "UPDATE BaseEntity SET deleted_date = NOW() WHERE id = ?")
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +26,14 @@ public class BaseEntity {
 
     @Column(name = "deleted_date")
     private LocalDateTime deletedDate;
+
+    @PrePersist
+    protected void onCreate() {
+        createdDate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedDate = LocalDateTime.now();
+    }
 }

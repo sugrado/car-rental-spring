@@ -77,4 +77,10 @@ public class CarManager implements CarService {
         carBusinessRules.carShouldBeExist(foundOptionalCar);
         return modelMapperService.forResponse().map(foundOptionalCar.get(), GetCarResponse.class);
     }
+
+    @Override
+    public double calculatePriceByDays(int carId, short days) {
+        GetCarResponse car = get(carId);
+        return days * car.getDailyPrice();
+    }
 }
