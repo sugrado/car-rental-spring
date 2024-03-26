@@ -20,7 +20,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +41,6 @@ public class RentalManager implements RentalService {
         carBusinessRules.carShouldNotBeRented(createRentalRequest.getCarId());
         rentalBusinessRules.customerFindeksScoreShouldBeEnough(createRentalRequest.getCustomerId(), createRentalRequest.getCarId());
         Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
-         // TODO: manager'lardaki updatedDate ve createdDate'lerin hepsi kaldırılacak.
 
         carService.updateState(createRentalRequest.getCarId(), CarState.RENTED);
         // TODO: rental'e sonradan ek hizmet satın alırken rental süresinin geçmemiş olması lazım

@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +30,6 @@ public class FuelManager implements FuelService {
         fuelBusinessRules.fuelNameCanNotBeDuplicatedWhenInserted(createFuelRequest.getName());
 
         Fuel fuel = modelMapperService.forRequest().map(createFuelRequest, Fuel.class);
-        fuel.setCreatedDate(LocalDateTime.now());
 
         Fuel createdFuel = fuelRepository.save(fuel);
         return modelMapperService.forResponse().map(createdFuel, CreatedFuelResponse.class);

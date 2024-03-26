@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +26,6 @@ public class CustomerManager implements CustomerService {
     @Override
     public CreatedCustomerResponse add(CreateCustomerRequest createCustomerRequest) {
         Customer customer = modelMapperService.forRequest().map(createCustomerRequest, Customer.class);
-        customer.setCreatedDate(LocalDateTime.now());
 
         Customer createdCustomer = customerRepository.save(customer);
         return modelMapperService.forResponse().map(createdCustomer, CreatedCustomerResponse.class);

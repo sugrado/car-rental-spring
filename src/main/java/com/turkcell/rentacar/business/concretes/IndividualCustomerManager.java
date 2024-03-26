@@ -21,7 +21,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +39,6 @@ public class IndividualCustomerManager implements IndividualCustomerService {
         Customer customer = modelMapperService.forResponse().map(createdCustomerResponse, Customer.class);
 
         IndividualCustomer individualCustomer = modelMapperService.forRequest().map(createIndividualCustomerRequest, IndividualCustomer.class);
-        individualCustomer.setCreatedDate(LocalDateTime.now());
         individualCustomer.setCustomer(customer);
 
         IndividualCustomer createdIndividualCustomer = individualCustomerRepository.save(individualCustomer);

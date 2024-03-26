@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +32,6 @@ public class ModelManager implements ModelService {
         modelBusinessRules.transmissionIdShouldBeExist(createModelRequest.getTransmissionId());
 
         Model model = modelMapperService.forRequest().map(createModelRequest, Model.class);
-        model.setCreatedDate(LocalDateTime.now());
 
         Model createdModel = modelRepository.save(model);
         return modelMapperService.forResponse().map(createdModel, CreatedModelResponse.class);

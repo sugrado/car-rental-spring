@@ -14,7 +14,6 @@ import com.turkcell.rentacar.entities.concretes.Brand;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +29,6 @@ public class BrandManager implements BrandService {
         brandBusinessRules.brandNameCanNotBeDuplicatedWhenInserted(createBrandRequest.getName());
 
         Brand brand = modelMapperService.forRequest().map(createBrandRequest, Brand.class);
-        brand.setCreatedDate(LocalDateTime.now());
 
         Brand createdBrand = brandRepository.save(brand);
         return modelMapperService.forResponse().map(createdBrand, CreatedBrandResponse.class);

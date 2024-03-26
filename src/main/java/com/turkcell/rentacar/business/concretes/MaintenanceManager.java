@@ -18,7 +18,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +36,6 @@ public class MaintenanceManager implements MaintenanceService {
         carBusinessRules.carShouldNotBeInMaintenance(createMaintenanceRequest.getCarId());
         carBusinessRules.carShouldNotBeRented(createMaintenanceRequest.getCarId());
         Maintenance maintenance = modelMapperService.forRequest().map(createMaintenanceRequest, Maintenance.class);
-        maintenance.setCreatedDate(LocalDateTime.now());
 
         carService.updateState(createMaintenanceRequest.getCarId(), CarState.MAINTENANCE);
 

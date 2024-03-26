@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +30,6 @@ public class TransmissionManager implements TransmissionService {
         transmissionBusinessRules.transmissionNameCanNotBeDuplicatedWhenInserted(createTransmissionRequest.getName());
 
         Transmission transmission = modelMapperService.forRequest().map(createTransmissionRequest, Transmission.class);
-        transmission.setCreatedDate(LocalDateTime.now());
 
         Transmission createdTransmission = transmissionRepository.save(transmission);
         return modelMapperService.forResponse().map(createdTransmission, CreatedTransmissionResponse.class);

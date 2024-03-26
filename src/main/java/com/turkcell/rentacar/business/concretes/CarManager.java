@@ -16,7 +16,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +31,6 @@ public class CarManager implements CarService {
         carBusinessRules.plateShouldBeUnique(createCarRequest.getPlate());
         Car car = modelMapperService.forRequest().map(createCarRequest, Car.class);
         car.setId(0); // model mapper bug
-        car.setCreatedDate(LocalDateTime.now());
         car.setState(CarState.AVAILABLE);
 
         Car createdCar = carRepository.save(car);
@@ -80,7 +78,8 @@ public class CarManager implements CarService {
 
     @Override
     public double calculatePriceByDays(int carId, short days) {
-        GetCarResponse car = get(carId);
-        return days * car.getDailyPrice();
+        Optional<Car> foundOptionalCar = carRepository.findById(carId);
+        carBusinessRules.carShouldBeExist(foundOptionalCar);
+        return days * foundOptionalCar.get().getDailyPrice();
     }
 }

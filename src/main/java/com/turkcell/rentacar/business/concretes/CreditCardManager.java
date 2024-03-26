@@ -14,7 +14,6 @@ import com.turkcell.rentacar.entities.concretes.CreditCard;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +30,6 @@ public class CreditCardManager implements CreditCardService {
 
         CreditCard creditCard = modelMapperService.forRequest().map(createCreditCardRequest, CreditCard.class);
         creditCard.setId(0);
-        creditCard.setCreatedDate(LocalDateTime.now());
 
         CreditCard createdCreditCard = creditCardRepository.save(creditCard);
         return modelMapperService.forResponse().map(createdCreditCard, CreatedCreditCardResponse.class);

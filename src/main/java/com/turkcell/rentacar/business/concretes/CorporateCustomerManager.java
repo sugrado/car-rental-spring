@@ -21,7 +21,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +39,6 @@ public class CorporateCustomerManager implements CorporateCustomerService {
         Customer customer = modelMapperService.forResponse().map(createdCustomerResponse, Customer.class);
 
         CorporateCustomer corporateCustomer = modelMapperService.forRequest().map(createCorporateCustomerRequest, CorporateCustomer.class);
-        corporateCustomer.setCreatedDate(LocalDateTime.now());
         corporateCustomer.setCustomer(customer);
 
         CorporateCustomer createdCorporateCustomer = corporateCustomerRepository.save(corporateCustomer);

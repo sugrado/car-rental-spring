@@ -35,7 +35,7 @@ public class CreateCreditCardRequest {
     private byte expirationMonth;
 
     @NotNull
-//    @ValidExpirationYear
+    // TODO: @ValidExpirationYear
     private short expirationYear;
 
     @NotNull
