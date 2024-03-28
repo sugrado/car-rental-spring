@@ -6,6 +6,7 @@ import com.turkcell.rentacar.business.dtos.responses.products.CreatedProductResp
 import com.turkcell.rentacar.business.dtos.responses.products.GetAllProductsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.products.GetProductResponse;
 import com.turkcell.rentacar.business.dtos.responses.products.UpdatedProductResponse;
+import com.turkcell.rentacar.entities.concretes.RentalProduct;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface ProductService {
     List<GetAllProductsListItemDto> getAll();
 
     GetProductResponse get(int id);
+
+    double calculateTotalPrice(List<RentalProduct> rentalProducts);
 }

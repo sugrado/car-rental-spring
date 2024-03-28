@@ -1,12 +1,14 @@
 package com.turkcell.rentacar.business.rules;
 
 import com.turkcell.rentacar.business.constants.messages.ProductMessages;
+import com.turkcell.rentacar.business.dtos.requests.rentalProducts.CreateRentalProductListItemDto;
 import com.turkcell.rentacar.core.utilities.exceptions.types.BusinessException;
 import com.turkcell.rentacar.dataAccess.abstracts.ProductRepository;
 import com.turkcell.rentacar.entities.concretes.Product;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,6 +26,13 @@ public class ProductBusinessRules {
         Optional<Product> product = productRepository.findById(productId);
         if (product.isEmpty()) {
             throw new BusinessException(ProductMessages.PRODUCT_NOT_FOUND);
+        }
+    }
+
+    public void allProductsShouldBeExists(List<CreateRentalProductListItemDto> items) {
+        int foundEntityCount = productRepository.countByIdIn(items.stream().map(CreateRentalProductListItemDto::getProductId).toList());
+        if (foundEntityCount != items.size()) {
+            throw new BusinessException(ProductMessages.SOME_PRODUCTS_NOT_FOUND);
         }
     }
 

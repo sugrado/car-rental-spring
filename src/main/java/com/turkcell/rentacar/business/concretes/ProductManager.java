@@ -11,6 +11,7 @@ import com.turkcell.rentacar.business.rules.ProductBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.ProductRepository;
 import com.turkcell.rentacar.entities.concretes.Product;
+import com.turkcell.rentacar.entities.concretes.RentalProduct;
 import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
@@ -64,5 +65,10 @@ public class ProductManager implements ProductService {
         Optional<Product> foundOptionalProduct = productRepository.findById(id);
         productBusinessRules.productShouldBeExist(foundOptionalProduct);
         return modelMapperService.forResponse().map(foundOptionalProduct.get(), GetProductResponse.class);
+    }
+
+    @Override
+    public double calculateTotalPrice(List<RentalProduct> rentalProducts) {
+        return productRepository.calculateTotalPrice(rentalProducts);
     }
 }

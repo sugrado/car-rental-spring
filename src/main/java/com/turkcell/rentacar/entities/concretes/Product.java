@@ -17,7 +17,7 @@ public class Product extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "dailyPrice")
+    @Column(name = "daily_price")
     private double dailyPrice;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
