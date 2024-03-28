@@ -14,7 +14,7 @@ public class UpdateCarRequest {
     private int modelYear;
 
     @NotNull
-    @Pattern(regexp = CarRegexes.plate)
+    @Pattern(regexp = CarRegexes.PLATE)
     private String plate;
 
     @NotNull
