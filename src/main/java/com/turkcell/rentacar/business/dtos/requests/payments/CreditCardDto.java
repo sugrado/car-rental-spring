@@ -18,7 +18,7 @@ public class CreditCardDto {
 
     @NotNull
     @Min(100)
-    @Max(128)
+    @Max(999)
     private short cvv;
 
     @NotNull
@@ -27,5 +27,6 @@ public class CreditCardDto {
     private byte expirationMonth;
 
     @NotNull
+    @Max(2050)
     private short expirationYear;
 }

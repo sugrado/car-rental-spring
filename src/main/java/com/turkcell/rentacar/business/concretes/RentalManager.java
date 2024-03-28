@@ -45,11 +45,8 @@ public class RentalManager implements RentalService {
         carBusinessRules.carShouldNotBeInMaintenance(createRentalRequest.getCarId());
         carBusinessRules.carShouldNotBeRented(createRentalRequest.getCarId());
         rentalBusinessRules.customerFindeksScoreShouldBeEnough(createRentalRequest.getCustomerId(), createRentalRequest.getCarId());
-        Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
 
-        carService.updateState(createRentalRequest.getCarId(), CarState.RENTED);
-        // TODO: rental'e sonradan ek hizmet satın alırken rental süresinin geçmemiş olması lazım
-        // TODO: rental'a return methodu yazılacak
+        Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
         Rental createdRental = rentalRepository.save(rental);
 
         double totalPrice = 0;
@@ -61,10 +58,10 @@ public class RentalManager implements RentalService {
                 .amount(totalPrice)
                 .creditCard(createRentalRequest.getCreditCard())
                 .build();
-
         CreatedPaymentResponse createdPaymentResponse = paymentService.add(createPaymentRequest);
-        paymentBusinessRules.paymentShouldBeSuccess(createdPaymentResponse);
+        paymentBusinessRules.paymentShouldBeSuccess(createdPaymentResponse.getState());
 
+        carService.updateState(createRentalRequest.getCarId(), CarState.RENTED);
         return modelMapperService.forResponse().map(createdRental, CreatedRentalResponse.class);
     }
 
@@ -103,10 +100,12 @@ public class RentalManager implements RentalService {
         Optional<Rental> foundOptionalRental = rentalRepository.findById(returnCarRequest.getRentalId());
         rentalBusinessRules.rentalShouldBeExist(foundOptionalRental);
         Rental rental = foundOptionalRental.get();
+
         rental.setReturnDate(returnCarRequest.getReturnDate());
         createLateReturnPaymentIfLate(rental);
-        carService.updateState(rental.getCar().getId(), CarState.AVAILABLE);
         rentalRepository.save(rental);
+
+        carService.updateState(rental.getCar().getId(), CarState.AVAILABLE);
         return modelMapperService.forResponse().map(rental, ReturnedCarResponse.class);
     }
 
@@ -116,9 +115,7 @@ public class RentalManager implements RentalService {
         }
         double price = carService.calculateLateFeeByDays(rental.getCar().getId(),
                 DateHelper.totalDaysBetween(rental.getEndDate(), rental.getReturnDate()));
-        CreateWithoutPaymentRequest createWithoutPaymentRequest = new CreateWithoutPaymentRequest();
-        createWithoutPaymentRequest.setRentalId(rental.getId());
-        createWithoutPaymentRequest.setAmount(price);
+        CreateWithoutPaymentRequest createWithoutPaymentRequest = new CreateWithoutPaymentRequest(rental.getId(), price);
         paymentService.addWithoutPayment(createWithoutPaymentRequest);
     }
 }

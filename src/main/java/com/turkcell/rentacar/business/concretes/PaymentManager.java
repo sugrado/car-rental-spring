@@ -2,9 +2,7 @@ package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.adapters.pos.PosService;
 import com.turkcell.rentacar.business.abstracts.PaymentService;
-import com.turkcell.rentacar.business.dtos.requests.payments.CreatePaymentRequest;
-import com.turkcell.rentacar.business.dtos.requests.payments.CreateWithoutPaymentRequest;
-import com.turkcell.rentacar.business.dtos.requests.payments.UpdatePaymentRequest;
+import com.turkcell.rentacar.business.dtos.requests.payments.*;
 import com.turkcell.rentacar.business.dtos.requests.pos.PaymentRequest;
 import com.turkcell.rentacar.business.dtos.responses.payments.*;
 import com.turkcell.rentacar.business.rules.PaymentBusinessRules;
@@ -30,10 +28,14 @@ public class PaymentManager implements PaymentService {
 
     @Override
     public CreatedPaymentResponse add(CreatePaymentRequest createPaymentRequest) {
-        boolean paymentResult = posService.pay(modelMapperService.forRequest().map(createPaymentRequest, PaymentRequest.class));
+        PaymentRequest paymentRequest = modelMapperService.forRequest().map(createPaymentRequest.getCreditCard(), PaymentRequest.class);
+        paymentRequest.setAmount(createPaymentRequest.getAmount());
+        boolean paymentResult = posService.pay(paymentRequest);
+
         Payment payment = modelMapperService.forRequest().map(createPaymentRequest, Payment.class);
         payment.setState(paymentResult ? PaymentState.SUCCESS : PaymentState.FAILED);
         payment.setPaymentDate(LocalDateTime.now());
+
         paymentRepository.save(payment);
         return modelMapperService.forResponse().map(payment, CreatedPaymentResponse.class);
     }
@@ -80,5 +82,30 @@ public class PaymentManager implements PaymentService {
         Optional<Payment> foundOptionalPayment = paymentRepository.findById(id);
         paymentBusinessRules.paymentShouldBeExist(foundOptionalPayment);
         return modelMapperService.forResponse().map(foundOptionalPayment.get(), GetPaymentResponse.class);
+    }
+
+    @Override
+    public void completeWithCard(CompletePaymentWithCardRequest completePaymentWithCardRequest) {
+        Optional<Payment> foundOptionalPayment = paymentRepository.findById(completePaymentWithCardRequest.getId());
+        paymentBusinessRules.paymentShouldBeExist(foundOptionalPayment);
+        Payment payment = foundOptionalPayment.get();
+
+        PaymentRequest paymentRequest = modelMapperService.forRequest().map(completePaymentWithCardRequest.getCreditCardDto(), PaymentRequest.class);
+        paymentRequest.setAmount(payment.getAmount());
+        boolean paymentResult = posService.pay(paymentRequest);
+        paymentBusinessRules.paymentShouldBeSuccess(paymentResult ? PaymentState.SUCCESS : PaymentState.FAILED);
+
+        payment.setState(PaymentState.SUCCESS);
+        paymentRepository.save(payment);
+    }
+
+    @Override
+    public void complete(CompletePaymentRequest completePaymentRequest) {
+        Optional<Payment> foundOptionalPayment = paymentRepository.findById(completePaymentRequest.getId());
+        paymentBusinessRules.paymentShouldBeExist(foundOptionalPayment);
+        Payment payment = foundOptionalPayment.get();
+
+        payment.setState(PaymentState.SUCCESS);
+        paymentRepository.save(payment);
     }
 }

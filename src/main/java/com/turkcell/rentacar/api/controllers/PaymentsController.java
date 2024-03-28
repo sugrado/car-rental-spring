@@ -1,6 +1,8 @@
 package com.turkcell.rentacar.api.controllers;
 
 import com.turkcell.rentacar.business.abstracts.PaymentService;
+import com.turkcell.rentacar.business.dtos.requests.payments.CompletePaymentRequest;
+import com.turkcell.rentacar.business.dtos.requests.payments.CompletePaymentWithCardRequest;
 import com.turkcell.rentacar.business.dtos.requests.payments.CreatePaymentRequest;
 import com.turkcell.rentacar.business.dtos.requests.payments.UpdatePaymentRequest;
 import com.turkcell.rentacar.business.dtos.responses.payments.*;
@@ -23,10 +25,22 @@ public class PaymentsController {
         return paymentService.add(createPaymentRequest);
     }
 
-    @PutMapping("/{id}") // api/v1/payments/5
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UpdatedPaymentResponse update(@PathVariable int id, @Valid @RequestBody UpdatePaymentRequest payment) {
         return paymentService.update(id, payment);
+    }
+
+    @PatchMapping("complete-with-card")
+    @ResponseStatus(HttpStatus.OK)
+    public void completeWithCard(@Valid @RequestBody CompletePaymentWithCardRequest completePaymentWithCardRequest) {
+        paymentService.completeWithCard(completePaymentWithCardRequest);
+    }
+
+    @PatchMapping("complete")
+    @ResponseStatus(HttpStatus.OK)
+    public void complete(@Valid @RequestBody CompletePaymentRequest completePaymentRequest) {
+        paymentService.complete(completePaymentRequest);
     }
 
     @DeleteMapping("/{id}")

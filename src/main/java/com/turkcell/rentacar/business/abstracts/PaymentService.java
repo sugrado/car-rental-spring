@@ -1,8 +1,6 @@
 package com.turkcell.rentacar.business.abstracts;
 
-import com.turkcell.rentacar.business.dtos.requests.payments.CreatePaymentRequest;
-import com.turkcell.rentacar.business.dtos.requests.payments.CreateWithoutPaymentRequest;
-import com.turkcell.rentacar.business.dtos.requests.payments.UpdatePaymentRequest;
+import com.turkcell.rentacar.business.dtos.requests.payments.*;
 import com.turkcell.rentacar.business.dtos.responses.payments.*;
 
 import java.util.List;
@@ -21,4 +19,8 @@ public interface PaymentService {
     List<GetAllPaymentsByRentalListItemDto> getAllByRental(int rentalId);
 
     GetPaymentResponse get(int id);
+
+    void completeWithCard(CompletePaymentWithCardRequest completePaymentWithCardRequest);
+
+    void complete(CompletePaymentRequest completePaymentRequest);
 }
