@@ -2,11 +2,9 @@ package com.turkcell.rentacar.api.controllers;
 
 import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.dtos.requests.rentals.CreateRentalRequest;
+import com.turkcell.rentacar.business.dtos.requests.rentals.ReturnCarRequest;
 import com.turkcell.rentacar.business.dtos.requests.rentals.UpdateRentalRequest;
-import com.turkcell.rentacar.business.dtos.responses.rentals.CreatedRentalResponse;
-import com.turkcell.rentacar.business.dtos.responses.rentals.GetAllRentalsListItemDto;
-import com.turkcell.rentacar.business.dtos.responses.rentals.GetRentalResponse;
-import com.turkcell.rentacar.business.dtos.responses.rentals.UpdatedRentalResponse;
+import com.turkcell.rentacar.business.dtos.responses.rentals.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +28,12 @@ public class RentalsController {
     @ResponseStatus(HttpStatus.OK)
     public UpdatedRentalResponse update(@PathVariable int id, @Valid @RequestBody UpdateRentalRequest rental) {
         return rentalService.update(id, rental);
+    }
+
+    @PatchMapping
+    @ResponseStatus(HttpStatus.OK)
+    public ReturnedCarResponse returnCar(@Valid @RequestBody ReturnCarRequest returnCarRequest) {
+        return rentalService.returnCar(returnCarRequest);
     }
 
     @DeleteMapping("/{id}")

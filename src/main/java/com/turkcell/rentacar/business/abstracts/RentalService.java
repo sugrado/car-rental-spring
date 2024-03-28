@@ -1,11 +1,9 @@
 package com.turkcell.rentacar.business.abstracts;
 
 import com.turkcell.rentacar.business.dtos.requests.rentals.CreateRentalRequest;
+import com.turkcell.rentacar.business.dtos.requests.rentals.ReturnCarRequest;
 import com.turkcell.rentacar.business.dtos.requests.rentals.UpdateRentalRequest;
-import com.turkcell.rentacar.business.dtos.responses.rentals.CreatedRentalResponse;
-import com.turkcell.rentacar.business.dtos.responses.rentals.GetAllRentalsListItemDto;
-import com.turkcell.rentacar.business.dtos.responses.rentals.GetRentalResponse;
-import com.turkcell.rentacar.business.dtos.responses.rentals.UpdatedRentalResponse;
+import com.turkcell.rentacar.business.dtos.responses.rentals.*;
 
 import java.util.List;
 
@@ -19,4 +17,6 @@ public interface RentalService {
     List<GetAllRentalsListItemDto> getAll();
 
     GetRentalResponse get(int id);
+
+    ReturnedCarResponse returnCar(ReturnCarRequest returnCarRequest);
 }

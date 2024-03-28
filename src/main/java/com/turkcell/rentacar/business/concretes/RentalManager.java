@@ -4,6 +4,7 @@ import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.InvoiceService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.dtos.requests.rentals.CreateRentalRequest;
+import com.turkcell.rentacar.business.dtos.requests.rentals.ReturnCarRequest;
 import com.turkcell.rentacar.business.dtos.requests.rentals.UpdateRentalRequest;
 import com.turkcell.rentacar.business.dtos.responses.rentals.CreatedRentalResponse;
 import com.turkcell.rentacar.business.dtos.responses.rentals.GetAllRentalsListItemDto;
@@ -78,5 +79,21 @@ public class RentalManager implements RentalService {
         Optional<Rental> foundOptionalRental = rentalRepository.findById(id);
         rentalBusinessRules.rentalShouldBeExist(foundOptionalRental);
         return modelMapperService.forResponse().map(foundOptionalRental.get(), GetRentalResponse.class);
+    }
+
+    @Override
+    public ReturnedCarResponse returnCar(ReturnCarRequest returnCarRequest) {
+        Optional<Rental> foundOptionalRental = rentalRepository.findById(returnCarRequest.getRentalId());
+        rentalBusinessRules.rentalShouldBeExist(foundOptionalRental);
+        Rental rental = foundOptionalRental.get();
+        rental.setReturnDate(returnCarRequest.getReturnDate());
+
+//        if(returnCarRequest.getReturnDate().isAfter(rental.getEndDate())) {
+//            invoiceService.add(rental);
+//        }
+//        invoiceService.add(createdRental, createRentalRequest.getCreditCardId());
+        carService.updateState(rental.getCar().getId(), CarState.AVAILABLE);
+        rentalRepository.save(rental);
+        return modelMapperService.forResponse().map(rental, ReturnedCarResponse.class);
     }
 }
