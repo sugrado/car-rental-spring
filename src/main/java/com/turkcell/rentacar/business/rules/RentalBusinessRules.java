@@ -25,6 +25,12 @@ public class RentalBusinessRules {
         }
     }
 
+    public void rentalShouldNotBeReturned(Rental rental) {
+        if (rental.getReturnDate() != null) {
+            throw new BusinessException(RentalMessages.RENTAL_ALREADY_RETURNED);
+        }
+    }
+
     public void rentalIdShouldBeExist(int rentalId) {
         Optional<Rental> rental = rentalRepository.findById(rentalId);
         if (rental.isEmpty()) {

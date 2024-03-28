@@ -4,7 +4,10 @@ import com.turkcell.rentacar.business.abstracts.MaintenanceService;
 import com.turkcell.rentacar.business.dtos.requests.maintenances.CreateMaintenanceRequest;
 import com.turkcell.rentacar.business.dtos.requests.maintenances.ReturnCarRequest;
 import com.turkcell.rentacar.business.dtos.requests.maintenances.UpdateMaintenanceRequest;
-import com.turkcell.rentacar.business.dtos.responses.maintenances.*;
+import com.turkcell.rentacar.business.dtos.responses.maintenances.CreatedMaintenanceResponse;
+import com.turkcell.rentacar.business.dtos.responses.maintenances.GetAllMaintenancesListItemDto;
+import com.turkcell.rentacar.business.dtos.responses.maintenances.GetMaintenanceResponse;
+import com.turkcell.rentacar.business.dtos.responses.maintenances.UpdatedMaintenanceResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,10 +33,10 @@ public class MaintenancesController {
         return maintenanceService.update(id, maintenance);
     }
 
-    @PatchMapping
+    @PatchMapping("/return")
     @ResponseStatus(HttpStatus.OK)
-    public ReturnedCarResponse returnCar(@Valid @RequestBody ReturnCarRequest returnCarRequest) {
-        return maintenanceService.returnCar(returnCarRequest);
+    public void returnCar(@Valid @RequestBody ReturnCarRequest returnCarRequest) {
+        maintenanceService.returnCar(returnCarRequest);
     }
 
     @DeleteMapping("/{id}")

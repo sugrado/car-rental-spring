@@ -20,6 +20,12 @@ public class MaintenanceBusinessRules {
         }
     }
 
+    public void maintenanceShouldNotBeReturned(Maintenance maintenance) {
+        if (maintenance.getActualReturnDate() != null) {
+            throw new BusinessException(MaintenanceMessages.MAINTENANCE_ALREADY_RETURNED);
+        }
+    }
+
     public void maintenanceIdShouldBeExist(int maintenanceId) {
         Optional<Maintenance> maintenance = maintenanceRepository.findById(maintenanceId);
         if (maintenance.isEmpty()) {

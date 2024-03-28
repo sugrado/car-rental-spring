@@ -96,10 +96,11 @@ public class RentalManager implements RentalService {
     }
 
     @Override
-    public ReturnedCarResponse returnCar(ReturnCarRequest returnCarRequest) {
+    public void returnCar(ReturnCarRequest returnCarRequest) {
         Optional<Rental> foundOptionalRental = rentalRepository.findById(returnCarRequest.getRentalId());
         rentalBusinessRules.rentalShouldBeExist(foundOptionalRental);
         Rental rental = foundOptionalRental.get();
+        rentalBusinessRules.rentalShouldNotBeReturned(rental);
 
         rental.setReturnDate(returnCarRequest.getReturnDate());
         createLateReturnPaymentIfLate(rental);

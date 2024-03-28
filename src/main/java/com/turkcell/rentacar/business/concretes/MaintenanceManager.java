@@ -5,7 +5,10 @@ import com.turkcell.rentacar.business.abstracts.MaintenanceService;
 import com.turkcell.rentacar.business.dtos.requests.maintenances.CreateMaintenanceRequest;
 import com.turkcell.rentacar.business.dtos.requests.maintenances.ReturnCarRequest;
 import com.turkcell.rentacar.business.dtos.requests.maintenances.UpdateMaintenanceRequest;
-import com.turkcell.rentacar.business.dtos.responses.maintenances.*;
+import com.turkcell.rentacar.business.dtos.responses.maintenances.CreatedMaintenanceResponse;
+import com.turkcell.rentacar.business.dtos.responses.maintenances.GetAllMaintenancesListItemDto;
+import com.turkcell.rentacar.business.dtos.responses.maintenances.GetMaintenanceResponse;
+import com.turkcell.rentacar.business.dtos.responses.maintenances.UpdatedMaintenanceResponse;
 import com.turkcell.rentacar.business.rules.CarBusinessRules;
 import com.turkcell.rentacar.business.rules.MaintenanceBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
@@ -72,15 +75,15 @@ public class MaintenanceManager implements MaintenanceService {
     }
 
     @Override
-    public ReturnedCarResponse returnCar(ReturnCarRequest returnCarRequest) {
+    public void returnCar(ReturnCarRequest returnCarRequest) {
         Optional<Maintenance> optionalMaintenance = maintenanceRepository.findById(returnCarRequest.getMaintenanceId());
         maintenanceBusinessRules.maintenanceShouldBeExist(optionalMaintenance);
-
         Maintenance maintenance = optionalMaintenance.get();
+        maintenanceBusinessRules.maintenanceShouldNotBeReturned(maintenance);
+
         maintenance.setActualReturnDate(returnCarRequest.getActualReturnDate());
         carService.updateState(maintenance.getCar().getId(), CarState.AVAILABLE);
 
         maintenanceRepository.save(maintenance);
-        return modelMapperService.forResponse().map(maintenance, ReturnedCarResponse.class);
     }
 }
