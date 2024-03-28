@@ -20,9 +20,5 @@ public class InvoiceBusinessRules {
         }
     }
 
-    public void paymentShouldBeSuccess(boolean paymentSuccess) {
-        if (!paymentSuccess) {
-            throw new BusinessException(InvoiceMessages.paymentFailed);
-        }
-    }
+
 }

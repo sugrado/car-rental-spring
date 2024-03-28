@@ -9,7 +9,6 @@ import com.turkcell.rentacar.business.rules.PaymentBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.PaymentRepository;
 import com.turkcell.rentacar.entities.concretes.Payment;
-import com.turkcell.rentacar.entities.concretes.Rental;
 import com.turkcell.rentacar.entities.enums.PaymentState;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

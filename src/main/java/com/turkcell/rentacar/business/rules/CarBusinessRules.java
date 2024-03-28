@@ -31,14 +31,14 @@ public class CarBusinessRules {
     public void carShouldNotBeInMaintenance(int carId) {
         Optional<Car> car = carRepository.findById(carId);
         if (car.get().getState().equals(CarState.MAINTENANCE)) {
-            throw new BusinessException(CarMessages.carIsNotAvailable);
+            throw new BusinessException(CarMessages.carIsUnderMaintenance);
         }
     }
 
     public void carShouldNotBeRented(int carId) {
         Optional<Car> car = carRepository.findById(carId);
         if (car.get().getState().equals(CarState.RENTED)) {
-            throw new BusinessException(CarMessages.carIsNotAvailable);
+            throw new BusinessException(CarMessages.carIsRented);
         }
     }
 
