@@ -20,11 +20,7 @@ public class Invoice extends BaseEntity {
     @Column(name = "total_day")
     private short totalDay;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rental_id")
     private Rental rental;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "credit_card_id")
-    private CreditCard creditCard;
 }
