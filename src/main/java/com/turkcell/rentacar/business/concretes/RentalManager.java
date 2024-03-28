@@ -4,11 +4,14 @@ import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.PaymentService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.dtos.requests.payments.CreatePaymentRequest;
+import com.turkcell.rentacar.business.dtos.requests.payments.CreateWithoutPaymentRequest;
 import com.turkcell.rentacar.business.dtos.requests.rentals.CreateRentalRequest;
 import com.turkcell.rentacar.business.dtos.requests.rentals.ReturnCarRequest;
 import com.turkcell.rentacar.business.dtos.requests.rentals.UpdateRentalRequest;
+import com.turkcell.rentacar.business.dtos.responses.payments.CreatedPaymentResponse;
 import com.turkcell.rentacar.business.dtos.responses.rentals.*;
 import com.turkcell.rentacar.business.rules.CarBusinessRules;
+import com.turkcell.rentacar.business.rules.PaymentBusinessRules;
 import com.turkcell.rentacar.business.rules.RentalBusinessRules;
 import com.turkcell.rentacar.core.utilities.helpers.DateHelper;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
@@ -31,6 +34,7 @@ public class RentalManager implements RentalService {
     private final ModelMapperService modelMapperService;
     private final RentalBusinessRules rentalBusinessRules;
     private final CarBusinessRules carBusinessRules;
+    private final PaymentBusinessRules paymentBusinessRules;
     private final CarService carService;
     private final PaymentService paymentService;
 
@@ -52,14 +56,15 @@ public class RentalManager implements RentalService {
         totalPrice += carService.calculatePriceByDays(createRentalRequest.getCarId(), DateHelper.totalDaysBetween(rental.getStartDate(), rental.getEndDate()));
         totalPrice += 2; // TODO: Ek servis ücretleri
 
-        // TODO: bulk
         CreatePaymentRequest createPaymentRequest = CreatePaymentRequest.builder()
                 .rentalId(createdRental.getId())
                 .amount(totalPrice)
                 .creditCard(createRentalRequest.getCreditCard())
                 .build();
 
-        paymentService.add(createPaymentRequest);
+        CreatedPaymentResponse createdPaymentResponse = paymentService.add(createPaymentRequest);
+        paymentBusinessRules.paymentShouldBeSuccess(createdPaymentResponse);
+
         return modelMapperService.forResponse().map(createdRental, CreatedRentalResponse.class);
     }
 
@@ -99,13 +104,21 @@ public class RentalManager implements RentalService {
         rentalBusinessRules.rentalShouldBeExist(foundOptionalRental);
         Rental rental = foundOptionalRental.get();
         rental.setReturnDate(returnCarRequest.getReturnDate());
-
-//        if(returnCarRequest.getReturnDate().isAfter(rental.getEndDate())) {
-//            invoiceService.add(rental);
-//        }
-//        invoiceService.add(createdRental, createRentalRequest.getCreditCardId());
+        createLateReturnPaymentIfLate(rental);
         carService.updateState(rental.getCar().getId(), CarState.AVAILABLE);
         rentalRepository.save(rental);
         return modelMapperService.forResponse().map(rental, ReturnedCarResponse.class);
+    }
+
+    private void createLateReturnPaymentIfLate(Rental rental) {
+        if (rental.getReturnDate().isBefore(rental.getEndDate())) {
+            return;
+        }
+        double price = carService.calculateLateFeeByDays(rental.getCar().getId(),
+                DateHelper.totalDaysBetween(rental.getEndDate(), rental.getReturnDate()));
+        CreateWithoutPaymentRequest createWithoutPaymentRequest = new CreateWithoutPaymentRequest();
+        createWithoutPaymentRequest.setRentalId(rental.getId());
+        createWithoutPaymentRequest.setAmount(price);
+        paymentService.addWithoutPayment(createWithoutPaymentRequest);
     }
 }

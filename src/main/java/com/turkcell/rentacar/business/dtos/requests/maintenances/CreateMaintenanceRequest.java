@@ -19,7 +19,4 @@ public class CreateMaintenanceRequest {
 
     @NotNull
     private LocalDateTime expectedReturnDate;
-
-    @NotNull
-    private LocalDateTime actualReturnDate;
 }

@@ -24,4 +24,6 @@ public interface CarService {
     GetCarResponse get(int id);
 
     double calculatePriceByDays(int carId, short days);
+
+    double calculateLateFeeByDays(int carId, short days);
 }

@@ -25,6 +25,7 @@ public class CarManager implements CarService {
     private final CarRepository carRepository;
     private final ModelMapperService modelMapperService;
     private final CarBusinessRules carBusinessRules;
+    private final float lateFeeRate = 1.5f;
 
     @Override
     public CreatedCarResponse add(CreateCarRequest createCarRequest) {
@@ -81,5 +82,12 @@ public class CarManager implements CarService {
         Optional<Car> foundOptionalCar = carRepository.findById(carId);
         carBusinessRules.carShouldBeExist(foundOptionalCar);
         return days * foundOptionalCar.get().getDailyPrice();
+    }
+
+    @Override
+    public double calculateLateFeeByDays(int carId, short days) {
+        Optional<Car> foundOptionalCar = carRepository.findById(carId);
+        carBusinessRules.carShouldBeExist(foundOptionalCar);
+        return days * foundOptionalCar.get().getDailyPrice() * lateFeeRate;
     }
 }
