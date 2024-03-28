@@ -16,14 +16,14 @@ public class MaintenanceBusinessRules {
 
     public void maintenanceShouldBeExist(Optional<Maintenance> maintenance) {
         if (maintenance.isEmpty()) {
-            throw new BusinessException(MaintenanceMessages.maintenanceNotFound);
+            throw new BusinessException(MaintenanceMessages.MAINTENANCE_NOT_FOUND);
         }
     }
 
     public void maintenanceIdShouldBeExist(int maintenanceId) {
         Optional<Maintenance> maintenance = maintenanceRepository.findById(maintenanceId);
         if (maintenance.isEmpty()) {
-            throw new BusinessException(MaintenanceMessages.maintenanceNotFound);
+            throw new BusinessException(MaintenanceMessages.MAINTENANCE_NOT_FOUND);
         }
     }
 }

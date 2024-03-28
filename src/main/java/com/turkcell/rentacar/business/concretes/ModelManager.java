@@ -7,7 +7,10 @@ import com.turkcell.rentacar.business.dtos.responses.models.CreatedModelResponse
 import com.turkcell.rentacar.business.dtos.responses.models.GetAllModelsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.models.GetModelResponse;
 import com.turkcell.rentacar.business.dtos.responses.models.UpdatedModelResponse;
+import com.turkcell.rentacar.business.rules.BrandBusinessRules;
+import com.turkcell.rentacar.business.rules.FuelBusinessRules;
 import com.turkcell.rentacar.business.rules.ModelBusinessRules;
+import com.turkcell.rentacar.business.rules.TransmissionBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.ModelRepository;
 import com.turkcell.rentacar.entities.concretes.Model;
@@ -23,13 +26,16 @@ import java.util.Optional;
 public class ModelManager implements ModelService {
     private final ModelRepository modelRepository;
     private final ModelBusinessRules modelBusinessRules;
+    private final BrandBusinessRules brandBusinessRules;
+    private final FuelBusinessRules fuelBusinessRules;
+    private final TransmissionBusinessRules transmissionBusinessRules;
     private final ModelMapperService modelMapperService;
 
     @Override
     public CreatedModelResponse add(CreateModelRequest createModelRequest) {
-        modelBusinessRules.brandIdShouldBeExist(createModelRequest.getBrandId());
-        modelBusinessRules.fuelIdShouldBeExist(createModelRequest.getFuelId());
-        modelBusinessRules.transmissionIdShouldBeExist(createModelRequest.getTransmissionId());
+        brandBusinessRules.brandIdShouldBeExist(createModelRequest.getBrandId());
+        fuelBusinessRules.fuelIdShouldBeExist(createModelRequest.getFuelId());
+        transmissionBusinessRules.transmissionIdShouldBeExist(createModelRequest.getTransmissionId());
 
         Model model = modelMapperService.forRequest().map(createModelRequest, Model.class);
 
@@ -40,9 +46,9 @@ public class ModelManager implements ModelService {
     @Override
     public UpdatedModelResponse update(int id, UpdateModelRequest updateModelRequest) {
         modelBusinessRules.modelIdShouldBeExist(id);
-        modelBusinessRules.brandIdShouldBeExist(updateModelRequest.getBrandId());
-        modelBusinessRules.fuelIdShouldBeExist(updateModelRequest.getFuelId());
-        modelBusinessRules.transmissionIdShouldBeExist(updateModelRequest.getTransmissionId());
+        brandBusinessRules.brandIdShouldBeExist(updateModelRequest.getBrandId());
+        fuelBusinessRules.fuelIdShouldBeExist(updateModelRequest.getFuelId());
+        transmissionBusinessRules.transmissionIdShouldBeExist(updateModelRequest.getTransmissionId());
 
         Model modelToUpdate = modelMapperService.forRequest().map(updateModelRequest, Model.class);
         modelToUpdate.setId(id);

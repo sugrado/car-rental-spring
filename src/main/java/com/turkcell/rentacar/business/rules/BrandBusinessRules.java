@@ -16,28 +16,28 @@ public class BrandBusinessRules {
 
     public void brandShouldBeExist(Optional<Brand> brand) {
         if (brand.isEmpty()) {
-            throw new BusinessException(BrandMessages.brandNotFound);
+            throw new BusinessException(BrandMessages.BRAND_NOT_FOUND);
         }
     }
 
     public void brandIdShouldBeExist(int brandId) {
         Optional<Brand> brand = brandRepository.findById(brandId);
         if (brand.isEmpty()) {
-            throw new BusinessException(BrandMessages.brandNotFound);
+            throw new BusinessException(BrandMessages.BRAND_NOT_FOUND);
         }
     }
 
     public void brandNameCanNotBeDuplicatedWhenInserted(String name) {
         Optional<Brand> foundOptionalBrand = brandRepository.findByNameIgnoreCase(name.trim());
         if (foundOptionalBrand.isPresent()) {
-            throw new BusinessException(BrandMessages.brandAlreadyExists);
+            throw new BusinessException(BrandMessages.BRAND_ALREADY_EXISTS);
         }
     }
 
     public void brandNameCanNotBeDuplicatedWhenUpdated(int id, String name) {
         boolean exists = brandRepository.existsByNameIgnoreCaseAndIdIsNot(name.trim(), id);
         if (exists) {
-            throw new BusinessException(BrandMessages.brandAlreadyExists);
+            throw new BusinessException(BrandMessages.BRAND_ALREADY_EXISTS);
         }
     }
 }

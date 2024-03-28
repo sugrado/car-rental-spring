@@ -18,7 +18,7 @@ public class BaseEntity {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "created_date")
+    @Column(name = "created_date", nullable = false, updatable = false)
     private LocalDateTime createdDate;
 
     @Column(name = "updated_date")

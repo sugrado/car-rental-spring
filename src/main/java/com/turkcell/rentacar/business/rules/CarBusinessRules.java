@@ -17,35 +17,35 @@ public class CarBusinessRules {
 
     public void carShouldBeExist(Optional<Car> car) {
         if (car.isEmpty()) {
-            throw new BusinessException(CarMessages.carNotFound);
+            throw new BusinessException(CarMessages.CAR_NOT_FOUND);
         }
     }
 
     public void carIdShouldBeExist(int carId) {
         Optional<Car> car = carRepository.findById(carId);
         if (car.isEmpty()) {
-            throw new BusinessException(CarMessages.carNotFound);
+            throw new BusinessException(CarMessages.CAR_NOT_FOUND);
         }
     }
 
     public void carShouldNotBeInMaintenance(int carId) {
         Optional<Car> car = carRepository.findById(carId);
         if (car.get().getState().equals(CarState.MAINTENANCE)) {
-            throw new BusinessException(CarMessages.carIsUnderMaintenance);
+            throw new BusinessException(CarMessages.CAR_UNDER_MAINTENANCE);
         }
     }
 
     public void carShouldNotBeRented(int carId) {
         Optional<Car> car = carRepository.findById(carId);
         if (car.get().getState().equals(CarState.RENTED)) {
-            throw new BusinessException(CarMessages.carIsRented);
+            throw new BusinessException(CarMessages.CAR_RENTED);
         }
     }
 
     public void plateShouldBeUnique(String plate) {
         Optional<Car> car = carRepository.findByPlate(plate);
         if (car.isPresent()) {
-            throw new BusinessException(CarMessages.plateIsAlreadyExist);
+            throw new BusinessException(CarMessages.PLATE_ALREADY_EXISTS);
         }
     }
 }

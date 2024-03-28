@@ -16,7 +16,7 @@ public class CustomerBusinessRules {
 
     public void customerShouldBeExist(Optional<Customer> customer) {
         if (customer.isEmpty()) {
-            throw new BusinessException(CustomerMessages.customerNotFound);
+            throw new BusinessException(CustomerMessages.CUSTOMER_NOT_FOUND);
         }
     }
 }

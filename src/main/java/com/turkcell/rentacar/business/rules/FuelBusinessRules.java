@@ -16,28 +16,28 @@ public class FuelBusinessRules {
 
     public void fuelShouldBeExist(Optional<Fuel> fuel) {
         if (fuel.isEmpty()) {
-            throw new BusinessException(FuelMessages.fuelNotFound);
+            throw new BusinessException(FuelMessages.FUEL_NOT_FOUND);
         }
     }
 
     public void fuelIdShouldBeExist(int fuelId) {
         Optional<Fuel> fuel = fuelRepository.findById(fuelId);
         if (fuel.isEmpty()) {
-            throw new BusinessException(FuelMessages.fuelNotFound);
+            throw new BusinessException(FuelMessages.FUEL_NOT_FOUND);
         }
     }
 
     public void fuelNameCanNotBeDuplicatedWhenInserted(String name) {
         Optional<Fuel> foundOptionalFuel = fuelRepository.findByNameIgnoreCase(name.trim());
         if (foundOptionalFuel.isPresent()) {
-            throw new BusinessException(FuelMessages.fuelAlreadyExists);
+            throw new BusinessException(FuelMessages.FUEL_ALREADY_EXISTS);
         }
     }
 
     public void fuelNameCanNotBeDuplicatedWhenUpdated(int id, String name) {
         boolean exists = fuelRepository.existsByNameIgnoreCaseAndIdIsNot(name.trim(), id);
         if (exists) {
-            throw new BusinessException(FuelMessages.fuelAlreadyExists);
+            throw new BusinessException(FuelMessages.FUEL_ALREADY_EXISTS);
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.turkcell.rentacar.business.constants.messages;
 
 public class FuelMessages {
-    public static final String fuelNotFound = "Fuel not found";
-    public static final String fuelAlreadyExists = "Fuel already exists";
+    public static final String FUEL_NOT_FOUND = "Fuel not found";
+    public static final String FUEL_ALREADY_EXISTS = "Fuel already exists";
 }

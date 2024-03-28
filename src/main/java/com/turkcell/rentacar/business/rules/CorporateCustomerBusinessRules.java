@@ -16,14 +16,14 @@ public class CorporateCustomerBusinessRules {
 
     public void corporateCustomerShouldBeExist(Optional<CorporateCustomer> corporateCustomer) {
         if (corporateCustomer.isEmpty()) {
-            throw new BusinessException(CorporateCustomerMessages.corporateCustomerNotFound);
+            throw new BusinessException(CorporateCustomerMessages.CORPORATE_CUSTOMER_NOT_FOUND);
         }
     }
 
     public void corporateCustomerIdShouldBeExist(int corporateCustomerId) {
         Optional<CorporateCustomer> corporateCustomer = corporateCustomerRepository.findById(corporateCustomerId);
         if (corporateCustomer.isEmpty()) {
-            throw new BusinessException(CorporateCustomerMessages.corporateCustomerNotFound);
+            throw new BusinessException(CorporateCustomerMessages.CORPORATE_CUSTOMER_NOT_FOUND);
         }
     }
 }

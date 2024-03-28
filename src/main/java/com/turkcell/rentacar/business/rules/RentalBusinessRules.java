@@ -21,21 +21,21 @@ public class RentalBusinessRules {
 
     public void rentalShouldBeExist(Optional<Rental> rental) {
         if (rental.isEmpty()) {
-            throw new BusinessException(RentalMessages.rentalNotFound);
+            throw new BusinessException(RentalMessages.RENTAL_NOT_FOUND);
         }
     }
 
     public void rentalIdShouldBeExist(int rentalId) {
         Optional<Rental> rental = rentalRepository.findById(rentalId);
         if (rental.isEmpty()) {
-            throw new BusinessException(RentalMessages.rentalNotFound);
+            throw new BusinessException(RentalMessages.RENTAL_NOT_FOUND);
         }
     }
 
     public void customerFindeksScoreShouldBeEnough(int customerId, int carId) {
         Optional<Car> car = carRepository.findById(carId);
         if (car.get().getMinFindeksScore() > customerService.getFindeksScore(customerId)) {
-            throw new BusinessException(RentalMessages.customerFindeksScoreIsNotEnough);
+            throw new BusinessException(RentalMessages.CUSTOMER_FINDEKS_SCORE_NOT_ENOUGH);
         }
     }
 }

@@ -16,14 +16,14 @@ public class IndividualCustomerBusinessRules {
 
     public void individualCustomerShouldBeExist(Optional<IndividualCustomer> individualCustomer) {
         if (individualCustomer.isEmpty()) {
-            throw new BusinessException(IndividualCustomerMessages.individualCustomerNotFound);
+            throw new BusinessException(IndividualCustomerMessages.INDIVIDUAL_CUSTOMER_NOT_FOUND);
         }
     }
 
     public void individualCustomerIdShouldBeExist(int individualCustomerId) {
         Optional<IndividualCustomer> individualCustomer = individualCustomerRepository.findById(individualCustomerId);
         if (individualCustomer.isEmpty()) {
-            throw new BusinessException(IndividualCustomerMessages.individualCustomerNotFound);
+            throw new BusinessException(IndividualCustomerMessages.INDIVIDUAL_CUSTOMER_NOT_FOUND);
         }
     }
 }
