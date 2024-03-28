@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,4 +31,7 @@ public class Rental extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @OneToMany(mappedBy = "rental", fetch = FetchType.LAZY)
+    private List<Payment> payments;
 }
