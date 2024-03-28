@@ -73,4 +73,9 @@ public class RentalProductManager implements RentalProductService {
         return modelMapperService.forResponse().map(rentalProducts, new TypeToken<List<GetAllRentalProductsListItemDto>>() {
         }.getType());
     }
+
+    @Override
+    public List<RentalProduct> addRange(List<RentalProduct> rentalProducts) {
+        return rentalProductRepository.saveAll(rentalProducts);
+    }
 }

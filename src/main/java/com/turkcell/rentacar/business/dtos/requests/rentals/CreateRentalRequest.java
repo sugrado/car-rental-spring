@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,6 +24,9 @@ public class CreateRentalRequest {
 
     @NotNull
     private int customerId;
+
+    @NotNull
+    private List<CreateRentalWithProductListItemDto> products;
 
     @NotNull
     private CreditCardDto creditCard;

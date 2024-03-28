@@ -1,22 +1,25 @@
 package com.turkcell.rentacar.business.concretes;
 
-import com.turkcell.rentacar.business.abstracts.CarService;
-import com.turkcell.rentacar.business.abstracts.PaymentService;
-import com.turkcell.rentacar.business.abstracts.RentalService;
+import com.turkcell.rentacar.business.abstracts.*;
 import com.turkcell.rentacar.business.dtos.requests.payments.CreatePaymentRequest;
 import com.turkcell.rentacar.business.dtos.requests.payments.CreateWithoutPaymentRequest;
 import com.turkcell.rentacar.business.dtos.requests.rentals.CreateRentalRequest;
 import com.turkcell.rentacar.business.dtos.requests.rentals.ReturnCarRequest;
 import com.turkcell.rentacar.business.dtos.requests.rentals.UpdateRentalRequest;
 import com.turkcell.rentacar.business.dtos.responses.payments.CreatedPaymentResponse;
-import com.turkcell.rentacar.business.dtos.responses.rentals.*;
+import com.turkcell.rentacar.business.dtos.responses.rentals.CreatedRentalResponse;
+import com.turkcell.rentacar.business.dtos.responses.rentals.GetAllRentalsListItemDto;
+import com.turkcell.rentacar.business.dtos.responses.rentals.GetRentalResponse;
+import com.turkcell.rentacar.business.dtos.responses.rentals.UpdatedRentalResponse;
 import com.turkcell.rentacar.business.rules.CarBusinessRules;
 import com.turkcell.rentacar.business.rules.PaymentBusinessRules;
 import com.turkcell.rentacar.business.rules.RentalBusinessRules;
 import com.turkcell.rentacar.core.utilities.helpers.DateHelper;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.RentalRepository;
+import com.turkcell.rentacar.entities.concretes.Product;
 import com.turkcell.rentacar.entities.concretes.Rental;
+import com.turkcell.rentacar.entities.concretes.RentalProduct;
 import com.turkcell.rentacar.entities.enums.CarState;
 import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
@@ -37,6 +40,8 @@ public class RentalManager implements RentalService {
     private final PaymentBusinessRules paymentBusinessRules;
     private final CarService carService;
     private final PaymentService paymentService;
+    private final ProductService productService;
+    private final RentalProductService rentalProductService;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -49,9 +54,18 @@ public class RentalManager implements RentalService {
         Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
         Rental createdRental = rentalRepository.save(rental);
 
+        List<RentalProduct> rentalProducts = createRentalRequest
+                .getProducts().stream().map(p -> {
+                    Product product = new Product();
+                    product.setId(p.getProductId());
+                    return new RentalProduct(p.getQuantity(), rental, product);
+                }).toList();
+
+        rentalProductService.addRange(rentalProducts);
+
         double totalPrice = 0;
         totalPrice += carService.calculatePriceByDays(createRentalRequest.getCarId(), DateHelper.totalDaysBetween(rental.getStartDate(), rental.getEndDate()));
-        totalPrice += 2; // TODO: Ek servis ücretleri
+        totalPrice += productService.calculateTotalPrice(rentalProducts);
 
         CreatePaymentRequest createPaymentRequest = CreatePaymentRequest.builder()
                 .rentalId(createdRental.getId())
@@ -107,7 +121,6 @@ public class RentalManager implements RentalService {
         rentalRepository.save(rental);
 
         carService.updateState(rental.getCar().getId(), CarState.AVAILABLE);
-        return modelMapperService.forResponse().map(rental, ReturnedCarResponse.class);
     }
 
     private void createLateReturnPaymentIfLate(Rental rental) {
