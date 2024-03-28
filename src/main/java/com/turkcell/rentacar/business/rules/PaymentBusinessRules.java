@@ -1,6 +1,5 @@
 package com.turkcell.rentacar.business.rules;
 
-import com.turkcell.rentacar.business.constants.messages.InvoiceMessages;
 import com.turkcell.rentacar.business.constants.messages.PaymentMessages;
 import com.turkcell.rentacar.business.dtos.responses.payments.CreatedPaymentResponse;
 import com.turkcell.rentacar.core.utilities.exceptions.types.BusinessException;
@@ -19,7 +18,7 @@ public class PaymentBusinessRules {
 
     public void paymentShouldBeSuccess(CreatedPaymentResponse createdPaymentResponse) {
         if (!createdPaymentResponse.getState().equals(PaymentState.SUCCESS)) {
-            throw new BusinessException(InvoiceMessages.paymentFailed);
+            throw new BusinessException(PaymentMessages.PAYMENT_FAILED);
         }
     }
 
