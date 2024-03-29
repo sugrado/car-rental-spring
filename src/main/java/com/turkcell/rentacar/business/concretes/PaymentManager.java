@@ -41,8 +41,8 @@ public class PaymentManager implements PaymentService {
     }
 
     @Override
-    public void addWithoutPayment(CreateWithoutPaymentRequest createWithoutPaymentRequest) {
-        Payment payment = modelMapperService.forRequest().map(createWithoutPaymentRequest, Payment.class);
+    public void addPendingPayment(CreatePendingPaymentRequest createPendingPaymentRequest) {
+        Payment payment = modelMapperService.forRequest().map(createPendingPaymentRequest, Payment.class);
         payment.setState(PaymentState.PENDING);
         paymentRepository.save(payment);
     }

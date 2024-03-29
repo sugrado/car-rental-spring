@@ -8,7 +8,7 @@ import java.util.List;
 public interface PaymentService {
     CreatedPaymentResponse add(CreatePaymentRequest createPaymentRequest);
 
-    void addWithoutPayment(CreateWithoutPaymentRequest createWithoutPaymentRequest);
+    void addPendingPayment(CreatePendingPaymentRequest createPendingPaymentRequest);
 
     UpdatedPaymentResponse update(int id, UpdatePaymentRequest updatePaymentRequest);
 

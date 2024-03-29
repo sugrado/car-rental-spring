@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateWithoutPaymentRequest {
+public class CreatePendingPaymentRequest {
     @NotNull
     private int rentalId;
 

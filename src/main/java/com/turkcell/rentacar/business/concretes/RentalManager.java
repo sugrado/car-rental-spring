@@ -2,7 +2,7 @@ package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.*;
 import com.turkcell.rentacar.business.dtos.requests.payments.CreatePaymentRequest;
-import com.turkcell.rentacar.business.dtos.requests.payments.CreateWithoutPaymentRequest;
+import com.turkcell.rentacar.business.dtos.requests.payments.CreatePendingPaymentRequest;
 import com.turkcell.rentacar.business.dtos.requests.rentals.CreateRentalRequest;
 import com.turkcell.rentacar.business.dtos.requests.rentals.ReturnCarRequest;
 import com.turkcell.rentacar.business.dtos.requests.rentals.UpdateRentalRequest;
@@ -12,6 +12,7 @@ import com.turkcell.rentacar.business.dtos.responses.rentals.GetAllRentalsListIt
 import com.turkcell.rentacar.business.dtos.responses.rentals.GetRentalResponse;
 import com.turkcell.rentacar.business.dtos.responses.rentals.UpdatedRentalResponse;
 import com.turkcell.rentacar.business.rules.CarBusinessRules;
+import com.turkcell.rentacar.business.rules.CustomerBusinessRules;
 import com.turkcell.rentacar.business.rules.PaymentBusinessRules;
 import com.turkcell.rentacar.business.rules.RentalBusinessRules;
 import com.turkcell.rentacar.core.utilities.helpers.DateHelper;
@@ -38,6 +39,7 @@ public class RentalManager implements RentalService {
     private final RentalBusinessRules rentalBusinessRules;
     private final CarBusinessRules carBusinessRules;
     private final PaymentBusinessRules paymentBusinessRules;
+    private final CustomerBusinessRules customerBusinessRules;
     private final CarService carService;
     private final PaymentService paymentService;
     private final ProductService productService;
@@ -46,6 +48,7 @@ public class RentalManager implements RentalService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public CreatedRentalResponse add(CreateRentalRequest createRentalRequest) {
+        customerBusinessRules.customerIdShouldBeExist(createRentalRequest.getCustomerId());
         carBusinessRules.carIdShouldBeExist(createRentalRequest.getCarId());
         carBusinessRules.carShouldNotBeInMaintenance(createRentalRequest.getCarId());
         carBusinessRules.carShouldNotBeRented(createRentalRequest.getCarId());
@@ -54,13 +57,11 @@ public class RentalManager implements RentalService {
         Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
         Rental createdRental = rentalRepository.save(rental);
 
-        List<RentalProduct> rentalProducts = createRentalRequest
-                .getProducts().stream().map(p -> {
-                    Product product = new Product();
-                    product.setId(p.getProductId());
-                    return new RentalProduct(p.getQuantity(), rental, product);
-                }).toList();
-
+        List<RentalProduct> rentalProducts = createRentalRequest.getProducts().stream().map(p -> {
+            Product product = new Product();
+            product.setId(p.getProductId());
+            return new RentalProduct(p.getQuantity(), rental, product);
+        }).toList();
         rentalProductService.addRange(rentalProducts);
 
         double totalPrice = 0;
@@ -129,7 +130,7 @@ public class RentalManager implements RentalService {
         }
         double price = carService.calculateLateFeeByDays(rental.getCar().getId(),
                 DateHelper.totalDaysBetween(rental.getEndDate(), rental.getReturnDate()));
-        CreateWithoutPaymentRequest createWithoutPaymentRequest = new CreateWithoutPaymentRequest(rental.getId(), price);
-        paymentService.addWithoutPayment(createWithoutPaymentRequest);
+        CreatePendingPaymentRequest createPendingPaymentRequest = new CreatePendingPaymentRequest(rental.getId(), price);
+        paymentService.addPendingPayment(createPendingPaymentRequest);
     }
 }

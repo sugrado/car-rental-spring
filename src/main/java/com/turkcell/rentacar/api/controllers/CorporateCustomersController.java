@@ -57,3 +57,12 @@ public class CorporateCustomersController {
     }
 }
 
+/*
+1 - brands, fuels, transmissions, models (sadece entity) -> Mert
+2 - cars (plate(repository), min_findeks_score, state (vurgular)) ve maintenance(business rules ve returnCar();) -> Özgür
+3 - customers (Individual customers ve corporate customers findeksService, Adapter ve Manager) -> Ömer Ç.
+4 - rental, product, rental_product ve payment tablo ilişkisi -> Ömer Faruk
+5 - rental add ve returnCar(kiralanan arabayı available durumuna çekme) ->
+6 - payment service komple ->
+7 - rentalProduct service komple -> Rozerin
+*/

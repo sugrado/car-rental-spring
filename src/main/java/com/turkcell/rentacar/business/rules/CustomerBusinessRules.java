@@ -19,4 +19,11 @@ public class CustomerBusinessRules {
             throw new BusinessException(CustomerMessages.CUSTOMER_NOT_FOUND);
         }
     }
+
+    public void customerIdShouldBeExist(int customerId) {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if (customer.isEmpty()) {
+            throw new BusinessException(CustomerMessages.CUSTOMER_NOT_FOUND);
+        }
+    }
 }
