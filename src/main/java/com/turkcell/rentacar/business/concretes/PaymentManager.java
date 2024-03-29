@@ -33,8 +33,11 @@ public class PaymentManager implements PaymentService {
         boolean paymentResult = posService.pay(paymentRequest);
 
         Payment payment = modelMapperService.forRequest().map(createPaymentRequest, Payment.class);
+        payment.setId(0);
         payment.setState(paymentResult ? PaymentState.SUCCESS : PaymentState.FAILED);
-        payment.setPaymentDate(LocalDateTime.now());
+        if (paymentResult) {
+            payment.setPaymentDate(LocalDateTime.now());
+        }
 
         paymentRepository.save(payment);
         return modelMapperService.forResponse().map(payment, CreatedPaymentResponse.class);
@@ -94,7 +97,7 @@ public class PaymentManager implements PaymentService {
         paymentRequest.setAmount(payment.getAmount());
         boolean paymentResult = posService.pay(paymentRequest);
         paymentBusinessRules.paymentShouldBeSuccess(paymentResult ? PaymentState.SUCCESS : PaymentState.FAILED);
-
+        payment.setPaymentDate(LocalDateTime.now());
         payment.setState(PaymentState.SUCCESS);
         paymentRepository.save(payment);
     }
@@ -106,6 +109,7 @@ public class PaymentManager implements PaymentService {
         Payment payment = foundOptionalPayment.get();
 
         payment.setState(PaymentState.SUCCESS);
+        payment.setPaymentDate(completePaymentRequest.getPaymentDate());
         paymentRepository.save(payment);
     }
 }
