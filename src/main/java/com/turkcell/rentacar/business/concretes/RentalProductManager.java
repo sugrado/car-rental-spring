@@ -4,6 +4,7 @@ import com.turkcell.rentacar.business.abstracts.PaymentService;
 import com.turkcell.rentacar.business.abstracts.ProductService;
 import com.turkcell.rentacar.business.abstracts.RentalProductService;
 import com.turkcell.rentacar.business.dtos.requests.payments.CreatePaymentRequest;
+import com.turkcell.rentacar.business.dtos.requests.rentalProducts.CreateRentalProductListItemDto;
 import com.turkcell.rentacar.business.dtos.requests.rentalProducts.CreateRentalProductRequest;
 import com.turkcell.rentacar.business.dtos.responses.payments.CreatedPaymentResponse;
 import com.turkcell.rentacar.business.dtos.responses.rentalProducts.CreatedRentalProductListItemDto;
@@ -44,17 +45,8 @@ public class RentalProductManager implements RentalProductService {
         rentalProductBusinessRules.rentalEndDateShouldNotBePassed(rentalId);
         productBusinessRules.allProductsShouldBeExists(createRentalProductRequest.getRentalProductList());
 
-        Rental rental = new Rental();
-        rental.setId(rentalId);
-        List<RentalProduct> rentalProducts = createRentalProductRequest
-                .getRentalProductList().stream().map(p -> {
-                    Product product = new Product();
-                    product.setId(p.getProductId());
-                    return new RentalProduct(p.getQuantity(), rental, product);
-                }).toList();
-
-        List<RentalProduct> createdRentalProducts = rentalProductRepository.saveAll(rentalProducts);
-        double totalPrice = productService.calculateTotalPrice(rentalProducts);
+        List<RentalProduct> createdRentalProducts = addProductsToRental(rentalId, createRentalProductRequest.getRentalProductList());
+        double totalPrice = productService.calculateTotalPrice(createdRentalProducts);
         CreatePaymentRequest createPaymentRequest = CreatePaymentRequest.builder()
                 .rentalId(rentalId)
                 .amount(totalPrice)
@@ -75,7 +67,15 @@ public class RentalProductManager implements RentalProductService {
     }
 
     @Override
-    public List<RentalProduct> addRange(List<RentalProduct> rentalProducts) {
+    public List<RentalProduct> addProductsToRental(int rentalId, List<CreateRentalProductListItemDto> createRentalProducts) {
+        Rental rental = new Rental();
+        rental.setId(rentalId);
+        List<RentalProduct> rentalProducts = createRentalProducts.stream().map(p -> {
+            Product product = new Product();
+            product.setId(p.getProductId());
+            return new RentalProduct(p.getQuantity(), rental, product);
+        }).toList();
+
         return rentalProductRepository.saveAll(rentalProducts);
     }
 }

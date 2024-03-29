@@ -15,7 +15,6 @@ import com.turkcell.rentacar.business.rules.*;
 import com.turkcell.rentacar.core.utilities.helpers.DateHelper;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.RentalRepository;
-import com.turkcell.rentacar.entities.concretes.Product;
 import com.turkcell.rentacar.entities.concretes.Rental;
 import com.turkcell.rentacar.entities.concretes.RentalProduct;
 import com.turkcell.rentacar.entities.enums.CarState;
@@ -56,16 +55,10 @@ public class RentalManager implements RentalService {
         Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
         Rental createdRental = rentalRepository.save(rental);
 
-        List<RentalProduct> rentalProducts = createRentalRequest.getProducts().stream().map(p -> {
-            Product product = new Product();
-            product.setId(p.getProductId());
-            return new RentalProduct(p.getQuantity(), rental, product);
-        }).toList();
-        rentalProductService.addRange(rentalProducts);
-
+        List<RentalProduct> createdRentalProducts = rentalProductService.addProductsToRental(rental.getId(), createRentalRequest.getProducts());
         double totalPrice = 0;
         totalPrice += carService.calculatePriceByDays(createRentalRequest.getCarId(), DateHelper.totalDaysBetween(rental.getStartDate(), rental.getEndDate()));
-        totalPrice += productService.calculateTotalPrice(rentalProducts);
+        totalPrice += productService.calculateTotalPrice(createdRentalProducts);
 
         CreatePaymentRequest createPaymentRequest = CreatePaymentRequest.builder()
                 .rentalId(createdRental.getId())
