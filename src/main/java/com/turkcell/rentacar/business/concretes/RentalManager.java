@@ -11,10 +11,7 @@ import com.turkcell.rentacar.business.dtos.responses.rentals.CreatedRentalRespon
 import com.turkcell.rentacar.business.dtos.responses.rentals.GetAllRentalsListItemDto;
 import com.turkcell.rentacar.business.dtos.responses.rentals.GetRentalResponse;
 import com.turkcell.rentacar.business.dtos.responses.rentals.UpdatedRentalResponse;
-import com.turkcell.rentacar.business.rules.CarBusinessRules;
-import com.turkcell.rentacar.business.rules.CustomerBusinessRules;
-import com.turkcell.rentacar.business.rules.PaymentBusinessRules;
-import com.turkcell.rentacar.business.rules.RentalBusinessRules;
+import com.turkcell.rentacar.business.rules.*;
 import com.turkcell.rentacar.core.utilities.helpers.DateHelper;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.RentalRepository;
@@ -40,6 +37,7 @@ public class RentalManager implements RentalService {
     private final CarBusinessRules carBusinessRules;
     private final PaymentBusinessRules paymentBusinessRules;
     private final CustomerBusinessRules customerBusinessRules;
+    private final ProductBusinessRules productBusinessRules;
     private final CarService carService;
     private final PaymentService paymentService;
     private final ProductService productService;
@@ -53,6 +51,7 @@ public class RentalManager implements RentalService {
         carBusinessRules.carShouldNotBeInMaintenance(createRentalRequest.getCarId());
         carBusinessRules.carShouldNotBeRented(createRentalRequest.getCarId());
         rentalBusinessRules.customerFindeksScoreShouldBeEnough(createRentalRequest.getCustomerId(), createRentalRequest.getCarId());
+        productBusinessRules.allProductsShouldBeExists(createRentalRequest.getProducts());
 
         Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
         Rental createdRental = rentalRepository.save(rental);

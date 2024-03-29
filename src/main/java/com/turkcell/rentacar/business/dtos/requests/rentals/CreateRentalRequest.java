@@ -1,6 +1,7 @@
 package com.turkcell.rentacar.business.dtos.requests.rentals;
 
 import com.turkcell.rentacar.business.dtos.requests.payments.CreditCardDto;
+import com.turkcell.rentacar.business.dtos.requests.rentalProducts.CreateRentalProductListItemDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +27,7 @@ public class CreateRentalRequest {
     private int customerId;
 
     @NotNull
-    private List<CreateRentalWithProductListItemDto> products;
+    private List<CreateRentalProductListItemDto> products;
 
     @NotNull
     private CreditCardDto creditCard;
